@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 const { User } = require("../models/user.models")
 const maxAge = 1 * (24 * 60 * 60 * 1000)
+const fs = require("fs")
 
 
 // Inscritpion
@@ -70,7 +71,7 @@ exports.getAllUsers = async (req, res) => {
       res.status(200).json(users)
     })
     .catch((error) => {
-      res.status(400).jspn({ error: error })
+      res.status(400).json({ error: error })
     })
 };
 
