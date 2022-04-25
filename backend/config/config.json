@@ -1,0 +1,9 @@
+{
+    "groupomania": {
+        "usernme": "root",
+        "password": "Marcrobert1988",
+        "database": "groupomania",
+        "host": "localhost",
+        "dialect": "mysql"
+    }
+}
