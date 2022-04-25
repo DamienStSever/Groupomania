@@ -3,7 +3,7 @@ const router = express.Router();
 const userCtrl = require("../controllers/user.controllers")
 
 
-// Post CRUD
+//  CRUD
 router.post("/signup", userCtrl.signup);
 router.post("/login" , userCtrl.signin)
 router.get ("/logout", userCtrl.logout)
