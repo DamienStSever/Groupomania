@@ -1,4 +1,6 @@
-module.exports = (sequelize, DataTypes) => {
+
+const { Sequelize, DataTypes } = require('sequelize');
+const sequelize = new Sequelize('sqlite::memory:')
 
     const User = sequelize.define('User', {
         id: {
@@ -12,11 +14,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
 
-        imageUrl: {
+        /* imageUrl: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
             defaultValue: 'http://localhost:3000/images/image_profil_default.jpg'
-        },
+        }, */
         email: {
             type: DataTypes.STRING,
             allowNull: false
@@ -25,15 +27,18 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
-        description: {
+       /*  description: {
             type: DataTypes.TEXT
-        },
+        }, */
 
     })
-    return User
+    User.sync().then(() => {
+        console.log("table and model synchro");
+    }) . catch((err) =>{
+        console.log("erreur");
+    })
+    console.log(User === sequelize.models.User);
+
+
     
-}
-
-
-
 

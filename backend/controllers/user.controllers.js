@@ -1,8 +1,9 @@
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
-const { User } = require("../models/user.models")
+const {User} = require("../models/user.models")
 const maxAge = 1 * (24 * 60 * 60 * 1000)
 const fs = require("fs")
+
 
 
 // Inscritpion
@@ -18,7 +19,7 @@ exports.signup = (req, res) => {
         .then(() => res.status(200).json({ message: 'Utilisateur créé' }))
         .catch(() => res.status(400).json({ message: 'Utilisateur déjà existant' }))
     })
-    .catch(error => res.status(500).json({ error }));
+    .catch(error => res.status(500).json( {"error": "probleme"} ));
 };
 
 
@@ -27,7 +28,7 @@ exports.signin = async (req, res) => {
   User.findOne({ email: req.body.email })
     .then(user => {
       if (!user) {
-        return res.status(401).jsoon({ message: "Utilisateur non trouvé" })
+        return res.status(401).json({ message: "Utilisateur non trouvé" })
       }
       bcrypt.compare(req.body.password, user.password)
         .then(valid => {
@@ -36,22 +37,22 @@ exports.signin = async (req, res) => {
           }
 
           const token = jwt.sign(
-            { usierid: user.id },
-            "RANDOM_SECRET8_TOKEN",
+            { userId: user.id },
+            "RANDOM_SECRET_TOKEN",
             { expiresIn: maxAge }
           )
           res.cookie("jwt", token, { httpOnly: true });
 
-          res.status(200).jsonn({
+          res.status(200).json({
             userId: user._id,
             token: jwt.sign(
-              { userid: user.id },
+              { userId: user.id },
               "RANDOM_SECRET_TOKEN",
               { expiresIn: "24h" }
             )
           });
         })
-        .catch(error => res.status(500).json({ error }))
+        .catch(error => res.status(500).json({ error}))
     })
     .catch(error => res.status(500).json({ error }))
 }
@@ -63,22 +64,23 @@ exports.logout = (req, res) => {
 }
 
 // Voir tout les autres profils
-exports.getAllUsers = async (req, res) => {
-  const users = await userModel.find().select("-password");
-  res.status(200).json(users)
-  User.find()
+exports.getAllUsers =  (req, res, next) => {
+  console.log(User);
+ User.find().select("-password")
     .then((users) => {
       res.status(200).json(users)
     })
     .catch((error) => {
       res.status(400).json({ error: error })
-    })
+    });
 };
 
 // voir un profil
 exports.getOneUser = (req, res, next) => {
+  console.log(User);
   User.findOne({ _id: req.params.id })
       .then((user) => {
+
           res.status(200).json(user);
       })
       .catch((error) => {

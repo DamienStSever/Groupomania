@@ -1,6 +1,8 @@
 const express = require ("express")
 const app = express();
+const path = require("path")
 const { Sequelize } = require('sequelize');
+
 
 const sequelize = new Sequelize("groupomania", "root", "Marcrobert1988", {
   dialect: "mysql",
