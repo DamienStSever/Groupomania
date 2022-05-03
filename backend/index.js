@@ -1,8 +1,20 @@
 const express = require ("express")
 const app = express();
 const path = require("path")
-const { Sequelize } = require('sequelize');
+const Sequelize  = require('sequelize');
 
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+  );
+  next();
+});
 
 const sequelize = new Sequelize("groupomania", "root", "Marcrobert1988", {
   dialect: "mysql",
@@ -29,6 +41,7 @@ app.use(express.urlencoded({extended: true}));
   app.listen(4200, () => {
     console.log("Backend running on port 4200");
   });
+
 
 
 

@@ -1,4 +1,4 @@
-const { Post } = require ("../models/publi.models")
+const { Post } = require ("../models/")
 const fs = require("fs")
 
 // Mettre une publication

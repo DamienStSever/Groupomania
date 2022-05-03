@@ -1,7 +1,4 @@
-
-const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = new Sequelize('sqlite::memory:')
-
+module.exports= (sequelize, DataTypes, ) =>{
     const User = sequelize.define('User', {
         id: {
             type: DataTypes.INTEGER,
@@ -14,11 +11,11 @@ const sequelize = new Sequelize('sqlite::memory:')
             allowNull: false
         },
 
-        /* imageUrl: {
+        imageUrl: {
             type: DataTypes.STRING,
             allowNull: true,
-            defaultValue: 'http://localhost:3000/images/image_profil_default.jpg'
-        }, */
+            defaultValue: 'http://localhost:4200/images/image_profil_default.jpg'
+        },
         email: {
             type: DataTypes.STRING,
             allowNull: false
@@ -27,18 +24,27 @@ const sequelize = new Sequelize('sqlite::memory:')
             type: DataTypes.STRING,
             allowNull: false
         },
-       /*  description: {
-            type: DataTypes.TEXT
-        }, */
-
+        description: {
+            type: DataTypes.TEXT,
+            allowNull: true,
+            defaultValue: ""
+        },
+        
     })
+    User.addScope('withoutPassword', {
+        attributes: { exclude: ['password'] }
+    });
     User.sync().then(() => {
         console.log("table and model synchro");
     }) . catch((err) =>{
         console.log("erreur");
     })
-    console.log(User === sequelize.models.User);
-
+    
+     console.log(User === sequelize.models.User); 
+     return User
+     
+}
+ 
 
     
 

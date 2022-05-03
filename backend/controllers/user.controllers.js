@@ -1,8 +1,9 @@
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
-const {User} = require("../models/user.models")
+const { User } = require("../models")
 const maxAge = 1 * (24 * 60 * 60 * 1000)
 const fs = require("fs")
+
 
 
 
@@ -19,7 +20,7 @@ exports.signup = (req, res) => {
         .then(() => res.status(200).json({ message: 'Utilisateur créé' }))
         .catch(() => res.status(400).json({ message: 'Utilisateur déjà existant' }))
     })
-    .catch(error => res.status(500).json( {"error": "probleme"} ));
+    .catch(error => res.status(500).json({ "error": "probleme" }));
 };
 
 
@@ -44,7 +45,7 @@ exports.signin = async (req, res) => {
           res.cookie("jwt", token, { httpOnly: true });
 
           res.status(200).json({
-            userId: user._id,
+            userId: user.id,
             token: jwt.sign(
               { userId: user.id },
               "RANDOM_SECRET_TOKEN",
@@ -52,7 +53,7 @@ exports.signin = async (req, res) => {
             )
           });
         })
-        .catch(error => res.status(500).json({ error}))
+        .catch(error => res.status(500).json({ error }))
     })
     .catch(error => res.status(500).json({ error }))
 }
@@ -64,9 +65,8 @@ exports.logout = (req, res) => {
 }
 
 // Voir tout les autres profils
-exports.getAllUsers =  (req, res, next) => {
-  console.log(User);
- User.find().select("-password")
+exports.getAllUsers = (req, res) => {
+  User.scope("withoutPassword").findAll()
     .then((users) => {
       res.status(200).json(users)
     })
@@ -77,46 +77,51 @@ exports.getAllUsers =  (req, res, next) => {
 
 // voir un profil
 exports.getOneUser = (req, res, next) => {
-  console.log(User);
-  User.findOne({ _id: req.params.id })
-      .then((user) => {
-
-          res.status(200).json(user);
-      })
-      .catch((error) => {
-          res.status(404).json({ error: error });
-      });
+  User.scope("withoutPassword").findOne({ where: { id: req.params.id } })
+    .then((user) => {
+      res.status(200).json(user);
+    })
+    .catch((error) => {
+      res.status(404).json({ error: error });
+    });
 }
 
 // mettre à jour son profil
 exports.updateUser = (req, res, next) => {
-  User.findOne({ _id: req.params.id })
-        .then(user => {
-            const filename = user.imageUrl.split('/images/')[1];
-            fs.unlink(`images/${filename}`, () => {
-                const userObject = req.file ?
-                    {
-                        ...JSON.parse(req.body.user),
-                        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-                    } : { ...req.body };
-                User.updateOne({ _id: req.params.id }, { ...userObject, _id: req.params.id })
-                    .then(() => res.status(200).json({ message: 'Utilisateur modifiée !' }))
-                    .catch(error => res.status(400).json({ error }));
-            });
-        })
+  User.findOne({ where: { id: req.params.id } })
+    
+    .then(user => {
+      console.log("yo");
+      const filename = user.imageUrl.split('/images/')[1];
+      fs.unlink(`images/${filename}`, () => {
+        const userObject = req.file ?
+          {
+            ...JSON.parse(req.body.user),
+            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+          } : { ...req.body };
+        User.update({ where: { id: req.params.id } }, { ...userObject, id: req.params.id })
+          .then(() => res.status(200).json({ message: 'Utilisateur modifiée !' }))
+          console.log("Wesh");
+      })
+      .catch(error => res.status(400).json({ error }));
+
+    })
   return res.status(400).send('ID unknown :' + req.params.id)
 }
 
+
+
 //Supprimer son profil
 exports.deleteUser = (req, res, next) => {
-  User.findOne({ _id: req.params.id })
-  .then(user => {
+  User.findOne({ where: { id: req.params.id } })
+    .then(user => {
       const filename = user.imageUrl.split('/images/')[1];
       fs.unlink(`images/${filename}`, () => {
-          User.deleteOne({ _id: req.params.id })
-              .then(() => res.status(200).json({ message: 'Profil supprimée !' }))
-              .catch(error => res.status(400).json({ error }));
-      });
-  })
-  .catch(error => res.status(500).json({ error }));
+        User.destroy({ where: { id: req.params.id } })
+          .then(() => res.status(200).json({ message: 'Profil supprimée !' }))
+          .catch(error => res.status(400).json({ error }));
+        ;
+      })
+    })
+    .catch(error => res.status(500).json({ error }));
 }
