@@ -37,8 +37,12 @@ app.use(express.urlencoded({extended: true}));
   const userRoutes = require("./routes/user.routes")
   app.use("/api/user", userRoutes)
 
+  const commentRoutes = require ('./routes/comment.routes')
+  app.use("/api/comment", commentRoutes)
+
   const publiRoutes = require("./routes/publi.routes")
   app.use("/api/publication", publiRoutes)
+  
   app.listen(4200, () => {
     console.log("Backend running on port 4200");
   });

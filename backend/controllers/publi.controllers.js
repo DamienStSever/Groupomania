@@ -2,7 +2,7 @@ const { Post } = require ("../models/")
 const fs = require("fs")
 
 // Mettre une publication
-exports.post = (req, res) => {
+exports.createPost = (req, res) => {
     const newPost = {
         content: req.body.content,
     }

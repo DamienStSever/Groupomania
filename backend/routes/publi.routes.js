@@ -5,7 +5,7 @@ const multer = require("../middleware/multer-config")
 const publiCtrl = require('../controllers/publi.controllers')
 
 // CRUD
-router.post("/",auth , multer, publiCtrl.post);
+router.post("/",auth , multer, publiCtrl.createPost);
 router.get("/", publiCtrl.getAllPost)
 router.get("/:id", publiCtrl.getOnePost)
 router.put("/:id", publiCtrl.updatePost)
