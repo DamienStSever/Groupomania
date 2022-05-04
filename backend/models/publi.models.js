@@ -17,5 +17,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER
         }
     })
+    Post.sync().then(() => {
+        console.log("table and model synchro");
+    }) . catch((err) =>{
+        console.log("erreur");
+    })
     return Post
 }

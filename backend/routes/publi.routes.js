@@ -1,13 +1,15 @@
 const express = require("express");
 const router = express.Router();
+const auth = require("../middleware/auth")
+const multer = require("../middleware/multer-config")
 const publiCtrl = require('../controllers/publi.controllers')
 
 // CRUD
-router.post("/publi", publiCtrl.post);
-router.get("/publi", publiCtrl.getAllPost)
-router.get("/publi/:id", publiCtrl.getOnePost)
-router.put("/publi/:id", publiCtrl.updatePost)
-router.delete("/publi/:id", publiCtrl.deletePost)
-router.post("/publi/:id", publiCtrl.likePost)
+router.post("/",auth , multer, publiCtrl.post);
+router.get("/", publiCtrl.getAllPost)
+router.get("/:id", publiCtrl.getOnePost)
+router.put("/:id", publiCtrl.updatePost)
+router.delete("/:id", auth, publiCtrl.deletePost)
+router.post("/:id", publiCtrl.likePost)
 
 module.exports = router

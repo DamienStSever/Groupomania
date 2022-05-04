@@ -4,7 +4,7 @@ module.exports = (req, res, next) => {
   try {
     if (req.cookies.jwt) {
       const {jwt: token} = req.cookies;
-      const decodedToken = jwt.verify(token, 'RANDOM_SECRET_TOKEN');
+      const decodedToken = jwt.verify(token, "RANDOM_SECRET_TOKEN");
       const userId = decodedToken.userId;
 
       if (req.body.userId && req.body.userId !== userId) {
