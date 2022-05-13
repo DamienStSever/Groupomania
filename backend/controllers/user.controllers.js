@@ -7,6 +7,7 @@ const fs = require("fs")
 
 
 
+
 // Inscritpion
 exports.signup = (req, res) => {
   bcrypt.hash(req.body.password, 10)
@@ -46,11 +47,7 @@ exports.signin = async (req, res) => {
 
           res.status(200).json({
             userId: user.id,
-            token: jwt.sign(
-              { userId: user.id },
-              "RANDOM_SECRET_TOKEN",
-              { expiresIn: "24h" }
-            )
+            token: token
           });
         })
         .catch(error => res.status(500).json({ error }))
@@ -91,10 +88,12 @@ exports.getOneUser = (req, res, next) => {
 // mettre à jour son profil
 exports.updateUser = (req, res, next) => {
   const userObject = req.body;
+  console.log(req.params.id);
   User.findOne({ where: { id: req.params.id } })
 
 
     .then(User => {
+      console.log(userObject);
 
       /* const filename = user.imageUrl.split('/images/')[1];
       fs.unlink(`images/${filename}`, () => {
@@ -103,14 +102,15 @@ exports.updateUser = (req, res, next) => {
             ...JSON.parse(req.body.user),
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
           } : { ...req.body }; */
+          
       User.update(userObject)
         .then(() => res.status(200).json({ message: 'Utilisateur modifiée !' }))
-
+          .catch(res.status(400).send("Probleme"))
       // })
 
 
     })
-  return res.status(400).send('ID unknown :' + req.params.id)
+  .catch (res.status(400).send('ID unknown :' + req.params.id))
 }
 
 
