@@ -7,7 +7,7 @@ function Header() {
         <div>
             <img src={logo} alt="Groupomania" className="groupologo" />
 
-            <button  className="userbutton"> Se connecter </button>
+            
 
             <button  className="userbutton"> S'inscrire</button>
 

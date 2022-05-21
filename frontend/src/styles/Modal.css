@@ -1,0 +1,17 @@
+
+    .buttonClose{
+        float: right;
+        vertical-align: top;
+        display: flex;
+        margin-top: 10px;
+        background-color: #fd2d01;
+        color:white;
+        border-color: #fd2d01;
+        margin: 5px;
+        }
+    .form{
+        color:#fd2d01;
+    }
+
+    
+  
