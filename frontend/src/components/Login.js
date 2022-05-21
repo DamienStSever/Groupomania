@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import Axios from "axios";
 import "../styles/Modal.css"
 import Modal from "react-modal"
@@ -23,7 +22,6 @@ function Login() {
         setIsOpen(true);
     }
     function afterOpenModal() {
-        // references are now sync'd and can be accessed.
         subtitle.style.color = '#f00';
     }
     function closeModal() {
@@ -32,25 +30,19 @@ function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const emailError = document.querySelector(".email.error")
-    const passwordError = document.querySelector(".password.error")
+    function alert(){
+        console.log("ca marche");
+    }
 
-    const { login } = () => {
+    const login  = () => {
         Axios.post("http://localhost:4200/api/user/login", {
             email: email,
             password: password,
         }).then((res) => {
-            if (res.data.errors) {
-                emailError.innerHTML = res.data.errors.email;
-                passwordError.innerHTML = res.data.erros.password;
-            } else{
-                window.location = "/"
-            }
+            console.log(res);
 
         })
-        .catch((err) => {
-            console.log(err);
-        })
+        
     };
 
 
@@ -74,11 +66,13 @@ function Login() {
                 </form>
                 <div className="form">Password</div>
                 <form>
-                    <input id="inputPassword" onChange={(e) => {
+                    <input id="inputPassword" type="password" onChange={(e) => {
                         setPassword(e.target.value)
                     }} />
                 </form>
-                <button onClick={(() => login)}>Valider</button>
+                
+                <button onClick={ login}>Valider</button>
+                
             </Modal>
         </div>
 

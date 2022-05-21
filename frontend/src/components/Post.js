@@ -12,7 +12,7 @@ dayjs.extend(relativeTime);
 
 function Post() {
     const [posts, setPosts] = useState([])
-    const[users, setUsers] = useState([])
+    const[users] = useState([])
     useEffect(() => {
         fetchData() ; 
     }, [])
