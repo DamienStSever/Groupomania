@@ -13,6 +13,7 @@ const customStyles = {
         transform: 'translate(-50%, -50%)',
     },
 };
+
 Modal.setAppElement("#root")
 function Login() {
     let subtitle;
@@ -27,19 +28,18 @@ function Login() {
     function closeModal() {
         setIsOpen(false);
     }
+    
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
-    function alert(){
-        console.log("ca marche");
-    }
 
     const login  = () => {
         Axios.post("http://localhost:4200/api/user/login", {
             email: email,
             password: password,
         }).then((res) => {
-            console.log(res);
+            console.log(res);localStorage.setItem("token", "Bearer " + res.data.token);
+            localStorage.setItem("id", res.data.userId);
+            localStorage.setItem("moderator", res.data.moderator);
 
         })
         

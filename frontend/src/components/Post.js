@@ -5,6 +5,7 @@ import axios from "axios"
 import "../styles/Post.css"
 
 
+
 const dayjs = require('dayjs')
 const relativeTime = require("dayjs/plugin/relativeTime");
 dayjs.extend(relativeTime);
@@ -12,62 +13,76 @@ dayjs.extend(relativeTime);
 
 function Post() {
     const [posts, setPosts] = useState([])
-    const[users] = useState([])
-    useEffect(() => {
-        fetchData() ; 
-    }, [])
+    const [post, setPost] = useState("")
+
     const fetchData = async () => {
         const { data } = await axios.get("http://localhost:4200/api/post")
-        setPosts(data)
-        data.forEach(post=> {
-            fetchUserByPost(post.userId)
-            console.log(post.userId);
-        }) 
-    }
-    
-    const fetchUserByPost = async (userId) => {
-        const { data } = await axios.get("http://localhost:4200/api/user/"+userId)
-        console.log(userId);
-
-       // setUsers(data)
-
         
+        setPosts (data)
     }
 
-     console.log(posts);
-    console.log(users); 
-  
-    return (
-        <div className="Posts">
+    
+    const postPost = () => {
+        axios.post("http://localhost:4200/api/post", {
+            post: post,
 
+        }).then((res) => {
+            console.log(res);
+
+        })
+    }
+    useEffect(() => {
+        fetchData();
+    }, [])
+
+
+    return (
+
+        <div className="Posts">
+            <div className="createPost">
+                <form>Parlez ici
+                    <input id="inputPost" onChange={(e) => {
+                        setPost(e.target.value)
+                    }}>
+
+                    </input>
+                    <button onClick={postPost}>Valider</button>
+                </form>
+            </div>
             <h1>Dernières publications</h1>
             {posts.map(post => (
-                
-                <div key={post.id}>
-                
 
-                    <p className="post">
+                <div key={post.id}>
+
+
+                    <div className="post">
+
                         <div className="date"> {dayjs(post.createdAt).fromNow()}</div>
-                        {users.map(user => (
-                            <div key={user.id} className="user">{user.pseudo }</div>
-                        ))}
-                        
+
+                            <div  className="user">{post.User.pseudo}</div>
+
+
                         {post.content}
-                        <div className="like"> 
-                        <img src={iconeLike} alt="icone commentaire" className="iconeLike"></img> 
-                        Like </div>
+                        <div className="like">
+                            <img src={iconeLike} alt="icone commentaire" className="iconeLike"></img>
+                            Like
+                        </div>
+
                         <div className="comment">
-                        <img src={iconeComment} alt="Icone commentaire" className="iconeComment"></img>
-                        Commentaire
+                            <img src={iconeComment} alt="Icone commentaire" className="iconeComment"></img>
+                            Commentaire
+                        </div>
+
                     </div>
-                    </p>
-                   
+
                 </div>
+
             ))}
+
         </div>
-        
+
     )
-    
+
 }
 
 
