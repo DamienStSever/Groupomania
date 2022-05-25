@@ -31,6 +31,13 @@ module.exports= (sequelize, DataTypes, ) =>{
         },
         
     })
+    User.associate = function (models) {
+        models.User.hasMany(models.Post, {
+            foreignKey: { name: 'userId',
+                allowNull: false
+            }
+        });
+    };
     User.addScope('withoutPassword', {
         attributes: { exclude: ['password'] }
     });

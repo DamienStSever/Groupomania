@@ -16,13 +16,20 @@ module.exports = (sequelize, DataTypes) => {
         like: {
             type: DataTypes.INTEGER
         },
-        /* userId: {
+        userId: {
             type: DataTypes.INTEGER
         },
-        publicationId: {
+        postId: {
             type: DataTypes.INTEGER
-        } */
+        }
     })
+    Comment.associate = function(models) {
+        models.Comment.belongsTo(models.User, {
+            onDelete: "cascade",
+            foreignKey: 'userId'
+        })
+    };
+
     Comment.sync().then(() => {
         console.log("table and model synchro");
     }) . catch((err) =>{

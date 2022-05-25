@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 const { User } = require("../models")
-const maxAge = 1 * (24 * 60 * 60 * 1000)
+const maxAge = 1 * 24 * 60 * 60 * 1000
 const fs = require("fs")
 
 
@@ -27,7 +27,7 @@ exports.signup = (req, res) => {
 
 // se Logger
 exports.signin = async (req, res) => {
-  User.findOne({ email: req.body.email })
+  User.findOne({ where: { email: req.body.email } })
     .then(user => {
       if (!user) {
         return res.status(401).json({ message: "Utilisateur non trouvé" })
@@ -38,23 +38,20 @@ exports.signin = async (req, res) => {
             return res.status(401).json({ message: "Mot de pass incorrect" })
           }
 
-          const token = jwt.sign(
-            { userId: user.id },
-            "RANDOM_SECRET_TOKEN",
-            { expiresIn: maxAge }
-          )
-          res.cookie("jwt", token, { httpOnly: true });
-
-          res.status(200).json({
-            userId: user.id,
-            token: token
-          });
+           res.status(200).json({
+                        userId: user.dataValues.id,
+                        token: jwt.sign(
+                            { userId: user.id },
+                            'RANDOM_TOKEN_SECRET',
+                            { expiresIn: '24h' }
+                        )
+                    });
         })
         .catch(error => res.status(500).json({ error }))
     })
     .catch(error => res.status(500).json({ error }))
-    
-    
+console.log(res.cookie());
+
 }
 
 // se déconnecter
@@ -92,7 +89,7 @@ exports.updateUser = (req, res, next) => {
   User.findOne({ where: { id: req.params.id } })
 
 
-    .then(User => {
+    .then((User) => {
       console.log(userObject);
 
       /* const filename = user.imageUrl.split('/images/')[1];
@@ -102,15 +99,15 @@ exports.updateUser = (req, res, next) => {
             ...JSON.parse(req.body.user),
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
           } : { ...req.body }; */
-          
+
       User.update(userObject)
         .then(() => res.status(200).json({ message: 'Utilisateur modifiée !' }))
-          .catch(res.status(400).send("Probleme"))
+        .catch(err => res.status(400).send("Probleme"))
       // })
 
 
     })
-  .catch (res.status(400).send('ID unknown :' + req.params.id))
+    .catch(err =>res.status(400).send('ID unknown :' + req.params.id))
 }
 
 

@@ -5,6 +5,8 @@ const fs = require("fs")
 exports.createComment = (req, res) => {
     const newComment = {
         content: req.body.content,
+        userId: req.body.userId,
+        postId: req.body.postId
     }
     Comment.create(newComment)
         .then(()=> res.status(200).json({message: "Commentaire crée"}))
