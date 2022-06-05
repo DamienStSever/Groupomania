@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react"
-import iconeComment from "../assets/icones/bulle.png"
-import iconeLike from "../assets/icones/like.png"
-import axios from "axios"
+import Axios from "axios"
 import "../styles/Post.css"
-
+import { Link } from "react-router-dom"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faComment } from "@fortawesome/free-solid-svg-icons"
+import UpdatePost from "./UpdatePost"
 
 
 const dayjs = require('dayjs')
+
 const relativeTime = require("dayjs/plugin/relativeTime");
 dayjs.extend(relativeTime);
 
@@ -14,28 +16,30 @@ dayjs.extend(relativeTime);
 function Post() {
     const [posts, setPosts] = useState([])
     const [post, setPost] = useState("")
+    const [file, setFile]= useState("")
 
     const fetchData = async () => {
-        const { data } = await axios.get("http://localhost:4200/api/post")
-        
-        setPosts (data)
+        const { data } = await Axios.get("http://localhost:4200/api/post")
+        setPosts(data)
     }
+    console.log(post.id);
+    const userId = JSON.parse(sessionStorage.getItem("id"))
 
-    
     const postPost = () => {
-        axios.post("http://localhost:4200/api/post", {
-            post: post,
 
+        Axios.post("http://localhost:4200/api/post", {
+            content: post,
+            userId: userId,
+            file: file
         }).then((res) => {
-            console.log(res);
+            console.log(post.id);
 
         })
     }
     useEffect(() => {
         fetchData();
     }, [])
-
-
+ 
     return (
 
         <div className="Posts">
@@ -43,6 +47,7 @@ function Post() {
                 <form>Parlez ici
                     <input id="inputPost" onChange={(e) => {
                         setPost(e.target.value)
+                        setFile()
                     }}>
 
                     </input>
@@ -56,21 +61,24 @@ function Post() {
 
 
                     <div className="post">
-
+                    <UpdatePost/>
+                        
                         <div className="date"> {dayjs(post.createdAt).fromNow()}</div>
 
-                            <div  className="user">{post.User.pseudo}</div>
+                       
 
-
+                        
                         {post.content}
-                        <div className="like">
-                            <img src={iconeLike} alt="icone commentaire" className="iconeLike"></img>
-                            Like
-                        </div>
+
 
                         <div className="comment">
-                            <img src={iconeComment} alt="Icone commentaire" className="iconeComment"></img>
-                            Commentaire
+                        <div className="user">{post.User.pseudo}</div>
+                            <Link to={"/comment/"+post.id}>
+                                <FontAwesomeIcon className="iconeComment" icon={faComment} />
+                                Commentaire
+                            </Link>
+                            
+                            {console.log(post.Comments[0])}
                         </div>
 
                     </div>

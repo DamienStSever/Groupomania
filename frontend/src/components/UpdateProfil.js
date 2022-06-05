@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState,  } from "react";
 import Axios from "axios";
 import "../styles/Modal.css"
 import Modal from "react-modal"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
 
 
 
@@ -19,7 +21,7 @@ const customStyles = {
 
 
 Modal.setAppElement("#root")
-function Login() {
+function Update() {
     let subtitle;
     const [modalIsOpen, setIsOpen] = React.useState(false);
 
@@ -33,49 +35,28 @@ function Login() {
         setIsOpen(false);
     }
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [pseudo, setPseudo] = useState("");
+    const [description, setDescription] = useState("");
   
-    const login = () => {
-        Axios.post("http://localhost:4200/api/user/login", {
-            email: email,
-            password: password,
+    const update = () => {
+        Axios.put("http://localhost:4200/api/user/"+ sessionStorage.id, {
+            pseudo: pseudo,
+            description: description,
         }).then((res) => {
             console.log(res);
             sessionStorage.setItem("token", "Bearer " + res.data.token);
             sessionStorage.setItem("id", res.data.userId);
-            window.location.reload()
             
         })
         
     };
     
-    // Transforme le bouton Se connecter en Se déconnecter
-    const [user, setUser] = useState(0)
-    useEffect(() => {
-
-        var id = sessionStorage.getItem("id")
-        if (id == null) {
-            id = " "
-
-
-        } else {
-            id = null
-
-        }
-        sessionStorage.getItem("id", id)
-        setUser(id)
-
-    }, []);
-
-
-    // Permet d 'envoyer l 'email et le password dnas la base de données
     
 
     return (
         <div>
 
-            {user && <button onClick={openModal} className="userbutton">se connecter</button>}
+            <button onClick={openModal} className="userbutton"><FontAwesomeIcon icon={faPen} />Modifier le Profil</button>
             <Modal
                 isOpen={modalIsOpen}
                 onAfterOpen={afterOpenModal}
@@ -85,20 +66,20 @@ function Login() {
             >
                 <h2 ref={(_subtitle) => (subtitle = _subtitle)} >Bienvenue à Groupomania</h2>
                 <button onClick={closeModal} className="buttonClose">Fermer</button>
-                <div className="form">email</div>
+                <div className="form">Changer votre pseudo</div>
                 <form>
-                    <input id="inputEmail" onChange={(e) => {
-                        setEmail(e.target.value)
+                    <input id="inputPseudo" onChange={(e) => {
+                        setPseudo(e.target.value)
                     }} />
                 </form>
-                <div className="form">Password</div>
+                <div className="form">Changer votre description</div>
                 <form>
-                    <input id="inputPassword" type="password" onChange={(e) => {
-                        setPassword(e.target.value)
+                    <input id="inputDescription"  onChange={(e) => {
+                        setDescription(e.target.value)
                     }} />
                 </form>
 
-                <button onClick={login}>Valider</button>
+                <button onClick={update}>Valider</button>
 
             </Modal>
 
@@ -110,4 +91,4 @@ function Login() {
 
 
 
-export default Login
+export default Update

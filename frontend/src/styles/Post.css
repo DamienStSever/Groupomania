@@ -6,7 +6,7 @@
 }
 
 .post{
-    width: 300px;
+    width: 500px;
     background:#ffd7d7;
     border: 2px solid #ffd7d7;
     border-radius: 10px;
@@ -37,14 +37,6 @@
     padding-right: 5px;
 }
 
-.like{
-    font-size: x-small;
-    padding-top: 5px;
-    padding-left: 5px;
-}
-
-.iconeLike{
-    height: 20px;
-    float: left;
-    padding-right: 5px;
+.icon{
+    float: right;
 }

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState,  } from "react";
 import Axios from "axios";
 import "../styles/Modal.css"
 import Modal from "react-modal"
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 
 const customStyles = {
@@ -19,7 +20,7 @@ const customStyles = {
 
 
 Modal.setAppElement("#root")
-function Login() {
+function Delete() {
     let subtitle;
     const [modalIsOpen, setIsOpen] = React.useState(false);
 
@@ -36,46 +37,25 @@ function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
   
-    const login = () => {
-        Axios.post("http://localhost:4200/api/user/login", {
+    const deleteUser = () => {
+        Axios.delete("http://localhost:4200/api/user/login"+ sessionStorage.id, {
             email: email,
             password: password,
         }).then((res) => {
             console.log(res);
             sessionStorage.setItem("token", "Bearer " + res.data.token);
             sessionStorage.setItem("id", res.data.userId);
-            window.location.reload()
             
         })
         
     };
     
-    // Transforme le bouton Se connecter en Se déconnecter
-    const [user, setUser] = useState(0)
-    useEffect(() => {
-
-        var id = sessionStorage.getItem("id")
-        if (id == null) {
-            id = " "
-
-
-        } else {
-            id = null
-
-        }
-        sessionStorage.getItem("id", id)
-        setUser(id)
-
-    }, []);
-
-
-    // Permet d 'envoyer l 'email et le password dnas la base de données
     
 
     return (
         <div>
 
-            {user && <button onClick={openModal} className="userbutton">se connecter</button>}
+            <button onClick={openModal} className="userbutton"><FontAwesomeIcon icon={faTrashCan} />Supprimer le Profil</button>
             <Modal
                 isOpen={modalIsOpen}
                 onAfterOpen={afterOpenModal}
@@ -83,22 +63,22 @@ function Login() {
                 style={customStyles}
                 contentLabel="Modal"
             >
-                <h2 ref={(_subtitle) => (subtitle = _subtitle)} >Bienvenue à Groupomania</h2>
+                <h2 ref={(_subtitle) => (subtitle = _subtitle)} >Pour supprimer votre compte mettez</h2>
                 <button onClick={closeModal} className="buttonClose">Fermer</button>
-                <div className="form">email</div>
+                <div className="form">Votre email</div>
                 <form>
                     <input id="inputEmail" onChange={(e) => {
                         setEmail(e.target.value)
                     }} />
                 </form>
-                <div className="form">Password</div>
+                <div className="form">Votre Password</div>
                 <form>
                     <input id="inputPassword" type="password" onChange={(e) => {
                         setPassword(e.target.value)
                     }} />
                 </form>
 
-                <button onClick={login}>Valider</button>
+                <button onClick={deleteUser}>Valider</button>
 
             </Modal>
 
@@ -110,4 +90,4 @@ function Login() {
 
 
 
-export default Login
+export default Delete
