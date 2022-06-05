@@ -19,10 +19,6 @@ module.exports = (sequelize, DataTypes) => {
         imageUrl: {
             type: DataTypes.STRING,
         },
-        like: {
-            type: DataTypes.INTEGER,
-            default: 0
-        }
     })
 
     Post.associate = function (models) {

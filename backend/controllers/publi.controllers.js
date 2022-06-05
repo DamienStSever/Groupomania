@@ -7,6 +7,7 @@ exports.createPost = (req, res) => {
     const newPost = {
         userId: req.body.userId,
         content: req.body.content,
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     }
     Post.create(newPost)
         .then(() => res.status(200).json({ message: "Publication crée" }))
@@ -18,9 +19,8 @@ exports.getAllPost = async (req, res) => {
     Post.findAll({
         include: [
             { model: User, as: 'User', attributes: ['pseudo'] },
-            {
-                model: Comment, include: [
-                    { model: User, attributes: [] }
+            {model: Comment, include: [
+                    { model: User, attributes: ['pseudo'] }
                 ]
             }
         ],
@@ -51,17 +51,17 @@ exports.updatePost = (req, res, next) => {
     const postObject = req.body;
     Post.findOne({ where: { id: req.params.id } })
         .then((Post) => {
-            /*  const filename = post.imageUrl.split('/images/')[1];
+             const filename = post.imageUrl.split('/images/')[1];
              fs.unlink(`images/${filename}`, () => {
                  const postObject = req.file ?
                      {
                          ...JSON.parse(req.body.post),
                          imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-                     } : { ...req.body }; */
+                     } : { ...req.body };
             Post.update(postObject)
                 .then(() => res.status(200).json({ message: 'Publication modifiée !' }))
                 .catch(error => res.status(400).json({ error }));
-            //});
+            });
         })
     .catch(err => res.status(400).send('ID unknown :' + req.params.id))
 }
@@ -71,43 +71,13 @@ exports.updatePost = (req, res, next) => {
 exports.deletePost = (req, res, next) => {
     Post.findOne({ where: { id: req.params.id } })
         .then(post => {
-            /* const filename = post.imageUrl.split('/images/')[1];
-            fs.unlink(`images/${filename}`, () => { */
+             const filename = post.imageUrl.split('/images/')[1];
+            fs.unlink(`images/${filename}`, () => { 
             Post.destroy({ where: { id: req.params.id } })
                 .then(() => res.status(200).json({ message: 'Publication supprimée !' }))
                 .catch(error => res.status(400).json({ error }));
-            //});
+            });
         })
         .catch(error => res.status(500).json({ error }));
 }
 
-
-//Liker un post
-exports.likePost = (req, res, next) => {
-    Post.findOne({ where: { id: req.params.id } }).then((resultat) => {
-        if (resultat.usersDisliked.indexOf(req.body.userId) == -1 && resultat.usersLiked.indexOf(req.body.userId) == -1) {
-            if (req.body.like === 1) {
-                Post.findOneAndUpdate({ where: { id: req.params.id } }, { $inc: { likes: 1 }, $push: { usersLiked: req.body.userId } })
-                    .then(() => res.status(200).json({ message: "Like ajouté !" }))
-                    .catch((error) => res.status(400).json({ error }));
-            }
-
-            else if (req.body.like === -1) {
-                Post.findOneAndUpdate({ where: { id: req.params.id } }, { $inc: { dislikes: 1 }, $push: { usersDisliked: req.body.userId } })
-                    .then(() => res.status(200).json({ message: "Dislike ajouté !" }))
-                    .catch((error) => res.status(400).json({ error }));
-            }
-        }
-        if (resultat.usersLiked.includes(req.body.userId)) {
-            Post.findOneAndUpdate({ where: { id: req.params.id } }, { $inc: { likes: -1 }, $pull: { usersLiked: req.body.userId } })
-                .then(() => res.status(200).json({ message: "Like retiré !" }))
-                .catch((error) => res.status(400).json({ error }));
-        }
-        else if (resultat.usersDisliked.includes(req.body.userId)) {
-            Post.findOneAndUpdate({ where: { id: req.params.id } }, { $inc: { dislikes: -1 }, $pull: { usersDisliked: req.body.userId } })
-                .then(() => res.status(200).json({ message: "Dislike retiré !" }))
-                .catch((error) => res.status(400).json({ error }));
-        }
-    })
-
-};

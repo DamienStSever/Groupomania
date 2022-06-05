@@ -13,9 +13,6 @@ module.exports = (sequelize, DataTypes) => {
         imageUrl: {
             type: DataTypes.STRING,
         },
-        like: {
-            type: DataTypes.INTEGER
-        },
         userId: {
             type: DataTypes.INTEGER
         },
@@ -26,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     Comment.associate = function(models) {
         models.Comment.belongsTo(models.User, {
             onDelete: "cascade",
-            foreignKey: 'userId'
+            foreignKey: { name: 'userId', allowNull: false }
         })
     };
 

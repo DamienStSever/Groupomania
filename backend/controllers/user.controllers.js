@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 const { User } = require("../models")
-const maxAge = 1 * 24 * 60 * 60 * 1000
 const fs = require("fs")
 
 
@@ -15,7 +14,8 @@ exports.signup = (req, res) => {
       const newUser = {
         pseudo: req.body.pseudo,
         email: req.body.email,
-        password: hash
+        password: hash,
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
       }
       User.create(newUser)
         .then(() => res.status(200).json({ message: 'Utilisateur créé' }))
@@ -92,18 +92,18 @@ exports.updateUser = (req, res, next) => {
     .then((User) => {
       console.log(userObject);
 
-      /* const filename = user.imageUrl.split('/images/')[1];
+       const filename = user.imageUrl.split('/images/')[1];
       fs.unlink(`images/${filename}`, () => {
         const userObject = req.file ?
           {
             ...JSON.parse(req.body.user),
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-          } : { ...req.body }; */
+          } : { ...req.body }; 
 
       User.update(userObject)
         .then(() => res.status(200).json({ message: 'Utilisateur modifiée !' }))
         .catch(err => res.status(400).send("Probleme"))
-      // })
+       })
 
 
     })
