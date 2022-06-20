@@ -3,19 +3,19 @@ const bcrypt = require("bcrypt")
 const { User } = require("../models")
 const fs = require("fs")
 
-
-
-
-
 // Inscritpion
 exports.signup = (req, res) => {
+  const userObject = req.body
+  if (req.file) {
+        userObject.imageUrl = `${req.protocol}://${req.get("host")}/images/${req.file.filename
+            }`;
+    }
   bcrypt.hash(req.body.password, 10)
     .then(hash => {
       const newUser = {
         pseudo: req.body.pseudo,
         email: req.body.email,
         password: hash,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
       }
       User.create(newUser)
         .then(() => res.status(200).json({ message: 'Utilisateur créé' }))
@@ -39,7 +39,7 @@ exports.signin = async (req, res) => {
           }
 
            res.status(200).json({
-                        userId: user.dataValues.id,
+                        userId: user.id,
                         token: jwt.sign(
                             { userId: user.id },
                             'RANDOM_TOKEN_SECRET',
@@ -50,13 +50,13 @@ exports.signin = async (req, res) => {
         .catch(error => res.status(500).json({ error }))
     })
     .catch(error => res.status(500).json({ error }))
-console.log(res.cookie());
+
 
 }
 
 // se déconnecter
 exports.logout = (req, res) => {
-  res.cookie("jwt", "", { maxAge: 1 });
+
   res.redirect("/")
 }
 
@@ -92,18 +92,18 @@ exports.updateUser = (req, res, next) => {
     .then((User) => {
       console.log(userObject);
 
-       const filename = user.imageUrl.split('/images/')[1];
+       /* const filename = user.imageUrl.split('/images/')[1];
       fs.unlink(`images/${filename}`, () => {
         const userObject = req.file ?
           {
             ...JSON.parse(req.body.user),
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-          } : { ...req.body }; 
+          } : { ...req.body }; */ 
 
       User.update(userObject)
         .then(() => res.status(200).json({ message: 'Utilisateur modifiée !' }))
         .catch(err => res.status(400).send("Probleme"))
-       })
+     //  })
 
 
     })

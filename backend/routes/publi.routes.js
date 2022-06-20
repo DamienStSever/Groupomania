@@ -8,8 +8,8 @@ const publiCtrl = require('../controllers/publi.controllers')
 router.post("/"/* ,auth */ , multer, publiCtrl.createPost);
 router.get("/", publiCtrl.getAllPost)
 router.get("/:id", publiCtrl.getOnePost)
-router.put("/:id", publiCtrl.updatePost)
-router.delete("/:id", auth, publiCtrl.deletePost)
-
+router.put("/:id", /* auth , */publiCtrl.updatePost)
+router.delete("/:id", /*  auth, */  publiCtrl.deletePost)
+router.post("/:id/like",  auth,   publiCtrl.likePost );
 
 module.exports = router

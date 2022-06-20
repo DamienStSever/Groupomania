@@ -1,4 +1,4 @@
-module.exports= (sequelize, DataTypes, ) =>{
+module.exports = (sequelize, DataTypes,) => {
     const User = sequelize.define('User', {
         id: {
             type: DataTypes.INTEGER,
@@ -14,7 +14,7 @@ module.exports= (sequelize, DataTypes, ) =>{
         imageUrl: {
             type: DataTypes.STRING,
             allowNull: true,
-            defaultValue: 'http://localhost:4200/images/image_profil_default.jpg'
+            defaultValue: 'https://static.jobat.be/uploadedImages/grandprofilfb.jpg'
         },
         email: {
             type: DataTypes.STRING,
@@ -29,29 +29,31 @@ module.exports= (sequelize, DataTypes, ) =>{
             allowNull: true,
             defaultValue: ""
         },
-        
+
     })
     User.associate = function (models) {
         models.User.hasMany(models.Post, {
-            foreignKey: { name: 'userId',
+            foreignKey: {
+                name: 'userId',
                 allowNull: false
             }
         });
+        
     };
     User.addScope('withoutPassword', {
         attributes: { exclude: ['password'] }
     });
     User.sync().then(() => {
         console.log("table and model synchro");
-    }) . catch((err) =>{
+    }).catch((err) => {
         console.log("erreur");
     })
-    
-     console.log(User === sequelize.models.User); 
-     return User
-     
-}
- 
 
-    
+    console.log(User === sequelize.models.User);
+    return User
+
+}
+
+
+
 

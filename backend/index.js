@@ -1,7 +1,6 @@
 const express = require ("express")
 const app = express();
 const path = require("path")
-const cookieParser = require("cookie-parser")
 const Sequelize  = require('sequelize');
 
 app.use((req, res, next) => {
@@ -28,7 +27,7 @@ try {
   console.error('Impossible de se connecter, erreur suivante :', error);
 }
   
-app.use(cookieParser())
+app.use("/images", express.static(path.join(__dirname,"images")))
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 

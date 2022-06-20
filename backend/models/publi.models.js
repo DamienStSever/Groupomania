@@ -1,23 +1,28 @@
 module.exports = (sequelize, DataTypes) => {
-    const Post= sequelize.define("Post", {
-        
+    const Post = sequelize.define("Post", {
+
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true,
             allowNull: false
         },
-        userId:{
+        userId: {
             type: DataTypes.INTEGER,
-            allowNull:false
+            allowNull: false
         },
-        
-        content:{
+
+        content: {
             type: DataTypes.STRING,
             allownull: false
         },
         imageUrl: {
             type: DataTypes.STRING,
+        },
+        likes: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0
         },
     })
 
@@ -32,11 +37,14 @@ module.exports = (sequelize, DataTypes) => {
         models.Post.hasMany(models.Comment, {
             foreignKey: 'postId'
         });
+        models.Post.hasMany(models.Like,{
+            foreignKey:"postId"
+        })
 
     };
     Post.sync().then(() => {
         console.log("table and model synchro");
-    }) . catch((err) =>{
+    }).catch((err) => {
         console.log(err);
     })
     return Post
