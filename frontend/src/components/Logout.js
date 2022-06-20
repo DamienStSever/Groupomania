@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "../styles/Logout.css"
 
 function Logout(){
@@ -27,7 +28,9 @@ function Logout(){
     }
     return(
         <div >
+        <Link to={"/"}>
             {user &&<button className="button" onClick={logout}> se déconnecter</button>}
+            </Link>
         </div>
     )
 }

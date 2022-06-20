@@ -40,3 +40,10 @@
 .icon{
     float: right;
 }
+
+.inputPost{
+    height: 50px;
+    size:25px;
+    width: 500px;
+    
+}

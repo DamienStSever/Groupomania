@@ -1,9 +1,10 @@
-import React, { useState,  } from "react";
+import React, { useState, } from "react";
 import Axios from "axios";
 import "../styles/Modal.css"
 import Modal from "react-modal"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+
 
 
 
@@ -22,7 +23,7 @@ const customStyles = {
 
 
 Modal.setAppElement("#root")
-const UpdatePost =() => {
+const UpdatePost = () => {
     let subtitle;
     const [modalIsOpen, setIsOpen] = React.useState(false);
 
@@ -37,25 +38,25 @@ const UpdatePost =() => {
     }
 
     const [content, setContent] = useState("");
-
-  
+    const [imageUrl, setImageUrl] = useState("")
+   
     const update = () => {
-        Axios.put("http://localhost:4200/api/post", {
-            content: content
+        Axios.put("http://localhost:4200/api"+ window.location.pathname, {
+            content: content,
+            imageUrl: imageUrl
         }).then((res) => {
-            console.log(res);
-
-            
+            window.location.reload()
         })
-        
+
     };
-    
-    
+
 
     return (
+
         <div>
 
             <button onClick={openModal} className="userbutton"><FontAwesomeIcon className="icon" icon={faPenToSquare} />Modifier Post</button>
+
             <Modal
                 isOpen={modalIsOpen}
                 onAfterOpen={afterOpenModal}
@@ -65,12 +66,21 @@ const UpdatePost =() => {
             >
                 <h2 ref={(_subtitle) => (subtitle = _subtitle)} >Bienvenue à Groupomania</h2>
                 <button onClick={closeModal} className="buttonClose">Fermer</button>
-                
+
                 <div className="form">Changer votre Post</div>
                 <form>
-                    <input id="inputPost"  onChange={(e) => {
+                    <input id="inputPost" onChange={(e) => {
                         setContent(e.target.value)
-                    }} />
+                        
+                    }} /> <br />
+                    Url de l'image ici
+                            <input id="inputImage" onChange={(e) => {
+                                setImageUrl(e.target.value)
+                                console.log(imageUrl)
+                            }}>
+
+                            </input> <br />
+
                 </form>
 
                 <button onClick={update}>Valider</button>

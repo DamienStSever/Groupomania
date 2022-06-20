@@ -67,11 +67,8 @@ function Login() {
         setUser(id)
 
     }, []);
-
-
-    // Permet d 'envoyer l 'email et le password dnas la base de données
     
-
+    // Permet d 'envoyer l 'email et le password dnas la base de données
     return (
         <div>
 

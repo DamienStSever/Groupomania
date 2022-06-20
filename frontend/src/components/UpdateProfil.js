@@ -21,7 +21,7 @@ const customStyles = {
 
 
 Modal.setAppElement("#root")
-function Update() {
+function UpdateProfil() {
     let subtitle;
     const [modalIsOpen, setIsOpen] = React.useState(false);
 
@@ -37,15 +37,14 @@ function Update() {
 
     const [pseudo, setPseudo] = useState("");
     const [description, setDescription] = useState("");
-  
+    const [imageUrl, setImageUrl] = useState("")
     const update = () => {
         Axios.put("http://localhost:4200/api/user/"+ sessionStorage.id, {
             pseudo: pseudo,
             description: description,
+            imageUrl: imageUrl
         }).then((res) => {
-            console.log(res);
-            sessionStorage.setItem("token", "Bearer " + res.data.token);
-            sessionStorage.setItem("id", res.data.userId);
+            console.log(res);       
             
         })
         
@@ -74,9 +73,17 @@ function Update() {
                 </form>
                 <div className="form">Changer votre description</div>
                 <form>
-                    <input id="inputDescription"  onChange={(e) => {
+                    <textarea id="inputDescription"  onChange={(e) => {
                         setDescription(e.target.value)
                     }} />
+                     <br />
+                    Url de l'image ici
+                            <input id="inputImage" onChange={(e) => {
+                                setImageUrl(e.target.value)
+                                console.log(imageUrl)
+                            }}>
+
+                            </input> <br />
                 </form>
 
                 <button onClick={update}>Valider</button>
@@ -91,4 +98,4 @@ function Update() {
 
 
 
-export default Update
+export default UpdateProfil

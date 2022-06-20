@@ -31,7 +31,7 @@ function Signup() {
   const [pseudo, setPseudo] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [description, setDescription]= useState("")
 
   // Transforme le bouton S incrire en bouton Profil
   const [user, setUser] = useState(0)
@@ -56,6 +56,7 @@ function Signup() {
       pseudo: pseudo,
       email: email,
       password: password,
+      description:description
     }).then((res) => {
       console.log(res);
         })
@@ -87,13 +88,22 @@ function Signup() {
                         setEmail(e.target.value)
                     }} />
         </form>
-        <div className="form">Password</div>
+        <div className="form">Password
         <form>
           <input id="inputPassword" type="password" onChange={(e) => {
                         setPassword(e.target.value)
-                    }} />
+                    }} /> <br />
+                    
+                    
         </form>
-        
+        </div>
+        <div className="form"> Description
+          <form>
+          <textarea id="inputDescription"  onChange={(e) => {
+                        setDescription(e.target.value)
+                    }} />
+          </form>
+        </div>
         <button onClick={signup}>Valider</button>
       </Modal>
     </div>

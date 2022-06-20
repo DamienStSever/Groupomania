@@ -1,9 +1,14 @@
 .App {
   text-align: center;
-
+background-color: black;
 }
 
-
+.appli{
+  background-image: url(../assets/logos/icon-left-font-monochrome-white.png) ;
+  background-color: #ffd7d7;
+  background-repeat:repeat-y;
+  background-position: center;
+}
 
 .App-header {
   background-color: #282c34;
@@ -27,4 +32,8 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.top{
+  position: fixed;
 }

@@ -13,6 +13,9 @@
 
 .groupologo{
     height: 50px;
+    border: #fd2d01 2px solid;
+    position: fixed;
 
 
 }
+
