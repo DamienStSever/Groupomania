@@ -1,5 +1,5 @@
 const { Post, User, Comment, Like } = require("../models/")
-const fs = require("fs")
+
 
 
 // Mettre une publication
@@ -20,7 +20,7 @@ exports.createPost = (req, res) => {
 exports.getAllPost = async (req, res) => {
     Post.findAll({
         include: [
-            { model: User, as: 'User', attributes: ['pseudo'] },
+            { model: User, as: 'User', attributes: ['pseudo', "imageUrl"] },
             {
                 model: Comment, include: [
                     { model: User, attributes: ['pseudo'] }
@@ -50,10 +50,9 @@ exports.getOnePost = (req, res, next) => {
 
 // Modifier son post
 exports.updatePost = (req, res, next) => {
-    const postObject = req.body;
+    const postObject = req.body; 
     Post.findOne({ where: { id: req.params.id } })
-        .then((Post) => {
-
+        .then((Post) => {           
             Post.update(postObject)
                 .then(() => res.status(200).json({ message: 'Publication modifiée !' }))
                 .catch(error => res.status(400).json({ error }));
@@ -65,12 +64,20 @@ exports.updatePost = (req, res, next) => {
 //supression d un post
 
 exports.deletePost = (req, res, next) => {
-    console.log(req.params.id);
     Post.findOne({ where: { id: req.params.id } })
-        .then((Post) => {
-
-            Post.destroy({ where: { id: req.params.id } })
-                .then(() => res.status(200).json({ message: 'Profil supprimée !' }))
+        .then((post) => {
+            if(!post){
+                res.status(404).json({
+                    error: new Error("Pas de Post")
+                });
+            }
+            if(post.userId !== req.auth.userId) {
+                res.status(400).json({
+                    error: new Error("Requête non authorisé")
+                });
+            }
+            post.destroy({ where: { id: req.params.id } })
+                .then(() => res.status(200).json({ message: 'Post supprimée !' }))
                 .catch(error => res.status(400).json({ error }));
             //});
         })
@@ -104,6 +111,19 @@ exports.likePost = (req, res) => {
                     res.status(201).json({ message: 'Like ajouté' })
                 }
 
+            }
+            else if(response.dataValues.liked == 1) {
+                if (req.body.likeValue == 1) {
+                    Like.destroy(
+                        { where:   { postId: req.body.postId, userId: req.body.userId}   }
+                    );
+                    Post.decrement(
+                        { likes: 1 },
+                        { where: { id: req.body.postId } }
+                    );
+                    res.status(201).json({ message: "Like retiré"})
+                };
+                
             }
         })
 }

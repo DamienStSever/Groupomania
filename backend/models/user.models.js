@@ -29,6 +29,11 @@ module.exports = (sequelize, DataTypes,) => {
             allowNull: true,
             defaultValue: ""
         },
+        admin:{
+            type: DataTypes.BOOLEAN ,
+            allowNull: false,
+            defaultValue: 0
+        }
 
     })
     User.associate = function (models) {
@@ -38,6 +43,14 @@ module.exports = (sequelize, DataTypes,) => {
                 allowNull: false
             }
         });
+    User.associate = function (models) {
+        models.User.hasMany(models.Comment, {
+            foreignKey: {
+                name: 'userId',
+                allowNull: false
+            }
+        })
+    }
         
     };
     User.addScope('withoutPassword', {
@@ -49,7 +62,7 @@ module.exports = (sequelize, DataTypes,) => {
         console.log("erreur");
     })
 
-    console.log(User === sequelize.models.User);
+    
     return User
 
 }

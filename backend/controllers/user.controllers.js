@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
-const { User } = require("../models")
+const { User, Comment } = require("../models")
 const fs = require("fs")
 
 // Inscritpion
@@ -61,7 +61,7 @@ exports.logout = (req, res) => {
 }
 
 // Voir tout les autres profils
-exports.getAllUsers = (req, res) => {
+exports.getAllUsers = (req, res) => {{
   User.scope("withoutPassword").findAll()
     .then((users) => {
       res.status(200).json(users)
@@ -69,7 +69,7 @@ exports.getAllUsers = (req, res) => {
     .catch((error) => {
       res.status(400).json({ error: error })
     });
-};
+}}
 
 // voir un profil
 exports.getOneUser = (req, res, next) => {
@@ -85,20 +85,10 @@ exports.getOneUser = (req, res, next) => {
 // mettre à jour son profil
 exports.updateUser = (req, res, next) => {
   const userObject = req.body;
-  console.log(req.params.id);
   User.findOne({ where: { id: req.params.id } })
 
 
     .then((User) => {
-      console.log(userObject);
-
-       /* const filename = user.imageUrl.split('/images/')[1];
-      fs.unlink(`images/${filename}`, () => {
-        const userObject = req.file ?
-          {
-            ...JSON.parse(req.body.user),
-            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-          } : { ...req.body }; */ 
 
       User.update(userObject)
         .then(() => res.status(200).json({ message: 'Utilisateur modifiée !' }))

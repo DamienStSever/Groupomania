@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Comment= sequelize.define("Comment",{
+    const Comment = sequelize.define("Comment",{
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
@@ -14,19 +14,21 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
         },
         userId: {
-            type: DataTypes.INTEGER
+            type: DataTypes.INTEGER,
+            allowNull: false
         },
         postId: {
-            type: DataTypes.INTEGER
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     })
-    Comment.associate = function(models) {
+    
+    Comment.associate = function (models) {
         models.Comment.belongsTo(models.User, {
             onDelete: "cascade",
             foreignKey: { name: 'userId', allowNull: false }
-        })
-    };
-
+        });
+    }
     Comment.sync().then(() => {
         console.log("table and model synchro");
     }) . catch((err) =>{

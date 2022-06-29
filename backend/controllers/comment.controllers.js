@@ -1,5 +1,5 @@
-const { Comment, } = require("../models/")
-const fs = require("fs")
+const { Comment, User  } = require("../models/")
+
 
 // Mettre un commentaire
 exports.createComment = (req, res) => {
@@ -23,8 +23,7 @@ exports.createComment = (req, res) => {
 exports.getAllComment = async (req, res) => {
     Comment.findAll({
         include: [
-            // { model: User, as: 'User', attributes: ['pseudo'] },
-
+            { model: User, as: 'User', attributes: ['pseudo'] },
 
         ],
 
@@ -57,17 +56,10 @@ exports.getCommentsForOnePost = (req, res, next) => {
 
 // Modifier son commentaire
 exports.updateComment = (req, res, next) => {
-    console.log(req.body);
     const commentObject = req.body;
     Comment.findOne({ where: { id: req.params.id } })
         .then((Comment) => {
-            /*  const filename = comment.imageUrl.split('/images/')[1];
-             fs.unlink(`images/${filename}`, () => {
-                 const commentObject = req.file ?
-                     {
-                         ...JSON.parse(req.body.comment),
-                         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-                     } : { ...req.body }; */
+            
             Comment.update(commentObject)
                 .then(() => res.status(200).json({ message: 'Publication modifiée !' }))
                 .catch(error => res.status(400).json({ error }));
@@ -81,8 +73,7 @@ exports.updateComment = (req, res, next) => {
 exports.deleteComment = (req, res, next) => {
     Comment.findOne({ where: { id: req.params.id } })
         .then(comment => {
-            /* const filename = comment.imageUrl.split('/images/')[1];
-            fs.unlink(`images/${filename}`, () => { */
+            
             Comment.destroy({ where: { id: req.params.id } })
                 .then(() => res.status(200).json({ message: 'Publication supprimée !' }))
                 .catch(error => res.status(400).json({ error }));
