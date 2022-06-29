@@ -18,12 +18,14 @@ function App() {
     <Router>
 
       <div className="header">
-        
+        <div className="buttonHeader">
         <Login></Login>
         <Logout></Logout>
         <Signin></Signin>
         <Profile/>
         <Home />
+        </div>
+        
         <Header />
     </div>
     <div>

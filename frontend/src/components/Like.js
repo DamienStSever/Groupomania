@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import "../styles/Logout.css"
 import Axios from "axios";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faThumbsUp } from "@fortawesome/free-solid-svg-icons"
 
 
-
-function Like() {
-    const [post, setPost] = useState("")
+function Like(props) {
+    const [post] = useState("")
     const [likes, setLikes] = useState([]);
     
 
@@ -38,13 +39,9 @@ function Like() {
 
     return (
 
-        <div className="likes">
-            <button onClick={Like}>
-
-                Likes : {likes}
-
-            </button>
-        </div>
+        <button className="like"onClick={() =>Like()}> {likes}
+                            <FontAwesomeIcon className="iconeLike" icon = {faThumbsUp}/>
+                            Like: {props.data}</button>
     )
 }
 

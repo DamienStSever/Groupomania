@@ -1,7 +1,7 @@
 import { useEffect, useState, } from "react"
 import Axios from "axios"
 import "../styles/Post.css"
-import { Link, Switch } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment } from "@fortawesome/free-solid-svg-icons"
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons"
@@ -30,7 +30,7 @@ function Post() {
     const fetchData = async () => {
         const { data } = await Axios.get("http://localhost:4200/api/post/")
         setPosts(data)
-
+        console.log(data);
     }
     
 
@@ -66,9 +66,7 @@ function Post() {
 
         })
 
-            .then((res) => {
-                console.log(postId);
-                window.location.reload()
+            .then((res) => {   
 
             })
     }
@@ -129,12 +127,12 @@ function Post() {
                             <div className="comment">
 
                                
-                                {console.log(post)}
+                                {console.log(post.Comments)}
 
-                                <Link to={"/comment/ofpost/" + post.id}>
+                                <Link className= "comment" to={"/comment/ofpost/" + post.id}>
                                     <Route path={"/comment/ofpost/" + post.id}>
 
-                                        <Comment data={post.Comments[0]}/>
+                                        <Comment data={post.User.pseudo}/>
                                     </Route>
 
                                     <FontAwesomeIcon className="iconeComment" icon={faComment} />

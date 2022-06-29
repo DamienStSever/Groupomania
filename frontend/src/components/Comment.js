@@ -6,6 +6,7 @@ const relativeTime = require("dayjs/plugin/relativeTime");
 dayjs.extend(relativeTime);
 
 const token = sessionStorage.getItem("token")
+
 function Comment( props) {
     const [comments, setComments] = useState([])
     const [comment, setComment] = useState([])
@@ -17,6 +18,8 @@ function Comment( props) {
         setComments(data)
         
     }
+
+
     
     const userId = JSON.parse(sessionStorage.getItem("id"))
 
@@ -70,13 +73,11 @@ function Comment( props) {
                 <div key={comment.id}>
                     <div className="comment">
                         <div className="date"> {dayjs(comment.createdAt).fromNow()}</div>
-                        <div className="user">{comment.User}</div>
+                        <div className="user">{props.data}</div>
                         
                         {comment.content}
                         <br />
                         <img src={comment.imageUrl} alt="" />
-                            <h2>{}</h2>
-                            {console.log(props.data)}
                     </div>
                 </div>
 

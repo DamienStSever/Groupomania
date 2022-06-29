@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+   
 
 }
 
@@ -40,6 +41,9 @@
     float: left;
     padding-right: 5px;
 }
+.comment{
+    text-decoration: none;
+}
 
 .like{
     background-color: #fd2d01;
@@ -56,4 +60,48 @@
     size:25px;
     width: 500px;
     
+}
+
+@media screen and (max-width: 992px) {
+    .Posts{
+        max-width: 500px;
+        margin: auto
+    }
+    .post{
+        max-width: 550px;
+    }
+    .userbutton{
+        flex-direction: column;
+        max-width: 75px
+    }
+    .inputPost{
+        max-width: 300px
+    }
+}
+
+@media screen and (max-width:768px) {
+
+    .post{
+        max-width: 250px;
+        margin-left: 90px;
+    }
+    .Posts{
+        max-width: 200px;
+        margin: auto;
+    }
+    .userbutton{
+        max-width: 50px;
+        font-size: xx-small;
+    }
+    .userimg{
+        max-width: 30px;
+        max-height: 30px;
+    }
+    .inputPost{
+        max-width: 150px;
+    }
+    .createPost{
+        max-width: 150px;
+        margin-left: 50px;
+    }
 }

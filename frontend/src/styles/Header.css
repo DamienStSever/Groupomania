@@ -18,4 +18,9 @@
 
 
 }
+@media screen and (max-width: 992px) {
+    .userbutton{
+        flex-direction: column;
+    }
+}
 

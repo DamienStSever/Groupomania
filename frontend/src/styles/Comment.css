@@ -1,7 +1,7 @@
 .Comments{
     text-decoration:none !important;
     color: black;
-    font-size: medium;
+    
 }
 
 .comment{
@@ -13,4 +13,13 @@
 .createComment{
     padding: 10px;
     border-bottom: 1px dotted #fd2d01;
+    text-decoration: none;
+}
+
+.date{
+    text-decoration: none;
+}
+
+.user{
+    text-decoration: none;
 }

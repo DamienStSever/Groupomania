@@ -34,11 +34,12 @@ function UpdateProfil() {
     function closeModal() {
         setIsOpen(false);
     }
-
-    const [pseudo, setPseudo] = useState("");
+    
+    const [pseudo, setPseudo] = useState();
     const [description, setDescription] = useState("");
     const [imageUrl, setImageUrl] = useState("")
     const update = () => {
+
         Axios.put("http://localhost:4200/api/user/"+ sessionStorage.id, {
             pseudo: pseudo,
             description: description,
@@ -70,20 +71,30 @@ function UpdateProfil() {
                 <button onClick={closeModal} className="buttonClose">Fermer</button>
                 <div className="form">Changer votre pseudo</div>
                 <form>
+                
                     <input id="inputPseudo" onChange={(e) => {
-                        setPseudo(e.target.value)
+                        const val = e.target.value
+                        if (val === null){ 
+                        setPseudo("vide")
+                        }
+                        else if (val != null) {
+                            setPseudo("pas vide") }
+                            
                     }} />
                 </form>
                 <div className="form">Changer votre description</div>
                 <form>
                     <textarea id="inputDescription"  onChange={(e) => {
+                        if ( e.target.value !== null){
                         setDescription(e.target.value)
+                        }
                     }} />
                      <br />
                     Url de l'image ici
                             <input id="inputImage" onChange={(e) => {
+                                if(e.target.value !== null) {
                                 setImageUrl(e.target.value)
-                                console.log(imageUrl)
+                                }
                             }}>
 
                             </input> <br />
