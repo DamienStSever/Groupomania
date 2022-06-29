@@ -18,7 +18,7 @@ const customStyles = {
     },
 
 };
-
+const token = sessionStorage.getItem("token")
 
 Modal.setAppElement("#root")
 function UpdateProfil() {
@@ -43,9 +43,12 @@ function UpdateProfil() {
             pseudo: pseudo,
             description: description,
             imageUrl: imageUrl
-        }).then((res) => {
+        },
+        {
+            headers: { Authorization: `${token}` },
+         }).then((res) => {
             console.log(res);       
-            
+            window.location.reload()
         })
         
     };

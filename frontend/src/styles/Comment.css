@@ -1,0 +1,16 @@
+.Comments{
+    text-decoration:none !important;
+    color: black;
+    font-size: medium;
+}
+
+.comment{
+    text-decoration: none !important;
+    font-size: medium;
+    border-bottom: 1px dotted #fd2d01;
+}
+
+.createComment{
+    padding: 10px;
+    border-bottom: 1px dotted #fd2d01;
+}

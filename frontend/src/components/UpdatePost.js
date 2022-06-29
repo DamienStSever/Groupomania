@@ -8,7 +8,6 @@ import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 
 
-
 const customStyles = {
     content: {
         top: '50%',
@@ -20,7 +19,7 @@ const customStyles = {
     },
 
 };
-
+const token = sessionStorage.getItem("token")
 
 Modal.setAppElement("#root")
 const UpdatePost = () => {
@@ -44,7 +43,11 @@ const UpdatePost = () => {
         Axios.put("http://localhost:4200/api"+ window.location.pathname, {
             content: content,
             imageUrl: imageUrl
-        }).then((res) => {
+    },
+            {
+                headers: { Authorization: `${token}` },
+             }
+        ).then((res) => {
             window.location.reload()
         })
 

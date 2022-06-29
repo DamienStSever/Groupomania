@@ -2,12 +2,6 @@ import "../styles/Header.css"
 import logo from "../assets/logos/icon.png"
 import { Link, } from "react-router-dom"
 
-
-
-
-const name = sessionStorage.getItem("id")
-
-
 function Header() {
 
 function scrollToTop(){

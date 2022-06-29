@@ -1,23 +1,21 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "../styles/Logout.css"
 import Axios from "axios";
 
 
-console.log(sessionStorage.id);
-
-const articleId = URLSearchParams.id
-
 
 function Like() {
+    const [post, setPost] = useState("")
     const [likes, setLikes] = useState([]);
+    
 
     const userId = JSON.parse(sessionStorage.getItem("id"))
-    const like = () => {
-        Axios.post("http://localhost:4200/api"+ window.location.pathname,  {
+    
+        Axios.post("http://localhost:4200/api/post/like",  {
             
-                articleId: articleId,
+                postId: post,
                 userId: userId,
-                like: 1
+                likeValue: 1
                 
             
         })
@@ -26,13 +24,13 @@ function Like() {
             .then(
                 (result) => {
                     setLikes(result.like)
-
+                   
                 }, (error) => {
                     if (error) {
 
                     }
                 })
-    }
+    
     useEffect(() => {
 
     }, [])
@@ -41,7 +39,7 @@ function Like() {
     return (
 
         <div className="likes">
-            <button onClick={like}>
+            <button onClick={Like}>
 
                 Likes : {likes}
 

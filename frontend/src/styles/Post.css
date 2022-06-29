@@ -6,13 +6,13 @@
 }
 
 .post{
-    width: 500px;
+    width: 700px;
     background:#ffd7d7;
     border: 2px solid #ffd7d7;
     border-radius: 10px;
     box-shadow: 5px 5px 10px #122442;
-    margin-bottom: 10px;
-   
+    margin-bottom: 20px;
+   font-family: "Lato";
 }
 .date{
     font-size: xx-small;
@@ -24,17 +24,27 @@
     font-size: small;
 }
 
+.userimg{
+    width: 50px;
+    height: 40px;
+}
 .comment{
     font-size: x-small;
     padding-top: 10px;
     padding-left: 5px;
-
+   
 }
 
 .iconeComment{
     height: 15px;
     float: left;
     padding-right: 5px;
+}
+
+.like{
+    background-color: #fd2d01;
+    color: white;
+    margin-left: 15px;
 }
 
 .icon{

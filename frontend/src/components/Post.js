@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, } from "react"
 import Axios from "axios"
 import "../styles/Post.css"
-import { Link } from "react-router-dom"
+import { Link, Switch } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment } from "@fortawesome/free-solid-svg-icons"
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons"
 import UpdatePost from "./UpdatePost"
 import Comment from "./Comment"
-import { BrowserRouter as Router, Route,  } from "react-router-dom"
+import { BrowserRouter as Router, Route, } from "react-router-dom"
 import DeletePost from "./DeletePost"
-import Like from "./Like.js"
+//import Like from "./Like.js"
 
 
 
@@ -22,9 +22,8 @@ dayjs.extend(relativeTime);
 
 function Post() {
     const [posts, setPosts] = useState([])
-    const [post, setPost] = useState("")
+    const [post, setPost] = useState([])
     const [imageUrl, setImageUrl] = useState("")
-
 
 
 
@@ -33,32 +32,54 @@ function Post() {
         setPosts(data)
 
     }
+    
 
     const userId = JSON.parse(sessionStorage.getItem("id"))
 
-    const postPost = (e) => {
+    const postPost = () => {
 
-        console.log(imageUrl);
-        console.log(setImageUrl);
-        Axios.post("http://localhost:4200/api/post", {
-            headers: {
-                Authorization:token,    
-              },
-            content: post,
+            
+
+        Axios.post("http://localhost:4200/api/post",
+            {
+                content: post,
+                userId: userId,
+                imageUrl: imageUrl
+            },
+            {
+                headers: { Authorization: `${token}` },
+
+            }).then((res) => {
+                console.log(userId);
+
+            })
+    }
+
+    function Like(postId) {
+
+        Axios.post("http://localhost:4200/api/post/like", {
+
+            postId: postId,
             userId: userId,
-            imageUrl: imageUrl
-
-        }).then((res) => {
+            likeValue: 1
 
 
         })
+
+            .then((res) => {
+                console.log(postId);
+                window.location.reload()
+
+            })
     }
+
     useEffect(() => {
         fetchData();
     }, [])
 
     return (
         <Router>
+
             <div className="Posts">
 
                 <div className="createPost">
@@ -69,16 +90,16 @@ function Post() {
                         }}>
 
                         </textarea> <br />
-                         Url de l'image ici
-                            <input id="inputImage" onChange={(e) => {
-                                setImageUrl(e.target.value)
-                                console.log(imageUrl)
-                            }}>
+                        Url de l'image ici
+                        <input id="inputImage" onChange={(e) => {
+                            setImageUrl(e.target.value)
+                            console.log(imageUrl)
+                        }}>
 
-                            </input> <br />
+                        </input> <br />
 
-                            <button onClick={postPost}>Valider</button>
-                        
+                        <button onClick={postPost}>Valider</button>
+
                     </form>
                 </div>
                 <h1>Dernières publications</h1>
@@ -93,41 +114,48 @@ function Post() {
                                 <UpdatePost />
                                 <DeletePost />
                             </Link>
-                            
+
                             <div className="date"> {dayjs(post.createdAt).fromNow()}</div>
-
+                            
                             {post.content}
-
+                            
+                            <br />
                             <img src={post.imageUrl} alt="" />
-                            {console.log(post.imageUrl)}
-                            <div className="like">
-
-                            </div>
+                            <div className="user">{post.User.pseudo}
+                                    <img className="userimg" src={post.User.imageUrl} alt="" />
+                                    
+                                </div>
+                           
                             <div className="comment">
 
-                                <div className="user">{post.User.pseudo}</div>
-
+                               
+                                {console.log(post)}
 
                                 <Link to={"/comment/ofpost/" + post.id}>
                                     <Route path={"/comment/ofpost/" + post.id}>
 
-                                        <Comment />
+                                        <Comment data={post.Comments[0]}/>
                                     </Route>
 
                                     <FontAwesomeIcon className="iconeComment" icon={faComment} />
                                     Commentaire
 
                                 </Link>
+                                
+                            <button className="like"onClick={() =>Like(post.id)}>
+                            <FontAwesomeIcon className="iconeLike" icon = {faThumbsUp}/>
+                            Like: {post.likes}</button>
 
-
-
+                            
+                               
                             </div>
+                            
 
 
                             <div>
-                                <Route path={"/post/" + post.id+"/like" } >
-                                    <Like />
-                                </Route>
+
+
+
                             </div>
 
 
@@ -139,6 +167,7 @@ function Post() {
                 ))}
 
             </div>
+
         </Router>
     )
 

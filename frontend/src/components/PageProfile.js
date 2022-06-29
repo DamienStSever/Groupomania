@@ -29,7 +29,7 @@ function PageProfile() {
       <div className="pseudo"> Pseudo :{profile.pseudo} </div>
       <div className="email"> Email : {profile.email}</div>
       <img src={profile.imageUrl} alt= "profil"/>
-      {console.log(profile.imageUrl)}
+
       <div className="profilDescription">Description : {profile.description} </div>
       
 

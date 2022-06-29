@@ -18,6 +18,7 @@ const customStyles = {
 
 };
 
+const token = sessionStorage.getItem("token")
 
 Modal.setAppElement("#root")
 const DeletePost = () => {
@@ -37,7 +38,11 @@ const DeletePost = () => {
 
   
     const deletePost = () => {
-        Axios.delete("http://localhost:4200/api"+ window.location.pathname,)
+        Axios.delete("http://localhost:4200/api"+ window.location.pathname,
+        {
+            headers: { Authorization: `${token}` },
+
+        })
         
         .then((res) => {
             console.log(res);
