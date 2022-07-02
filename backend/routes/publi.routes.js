@@ -11,6 +11,6 @@ router.get("/", publiCtrl.getAllPost)
 router.get("/:id", publiCtrl.getOnePost)
 router.put("/:id", auth ,publiCtrl.updatePost)
 router.delete("/:id",  auth,  publiCtrl.deletePost)
-router.post("/like", /*  auth, */   publiCtrl.likePost );
+router.post("/like",   /* auth,   */  publiCtrl.likePost );
 
 module.exports = router

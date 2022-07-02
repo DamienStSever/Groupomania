@@ -32,7 +32,11 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey:{ name: "postId", allowNull: false}
         })
     };
-
+    Like.sync().then(() => {
+        console.log("table and model synchro");
+    }).catch((err) => {
+        console.log(err);
+    })
     return Like
 }
 

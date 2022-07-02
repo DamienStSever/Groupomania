@@ -26,7 +26,7 @@ exports.getAllComment = async (req, res) => {
             { model: User, as: 'User', attributes: ['pseudo'] },
 
         ],
-
+        
         order: [["createdAt", "DESC"]],
     })
         .then((comments) => {
