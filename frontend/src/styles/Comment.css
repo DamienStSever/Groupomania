@@ -20,6 +20,29 @@
     text-decoration: none;
 }
 
-.user{
+.userComment{
     text-decoration: none;
+    display: flex;
+    float: right;
+    
+}
+
+.trashButtonComment{
+        float: right;
+        vertical-align: top;
+        display: flex;
+        margin-top: 10px;
+        background-color: #fd2d01;
+        color:white;
+        border-color: #fd2d01;
+        margin: 2px;
+        font-family: "Lato";
+        
+    
+}
+
+@media screen and (max-width: 992px) {
+    .trashButtonComment{
+        font-size: 20px
+    }
 }

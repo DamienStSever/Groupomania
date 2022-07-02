@@ -1,4 +1,4 @@
-import React, { useState,  } from "react";
+import React, { useState, } from "react";
 import Axios from "axios";
 import "../styles/Modal.css"
 import Modal from "react-modal"
@@ -34,27 +34,27 @@ function UpdateProfil() {
     function closeModal() {
         setIsOpen(false);
     }
-    
+
     const [pseudo, setPseudo] = useState();
-    const [description, setDescription] = useState("");
-    const [imageUrl, setImageUrl] = useState("")
+    const [description, setDescription] = useState();
+    const [imageUrl, setImageUrl] = useState()
     const update = () => {
 
-        Axios.put("http://localhost:4200/api/user/"+ sessionStorage.id, {
+        Axios.put("http://localhost:4200/api/user/" + sessionStorage.id, {
             pseudo: pseudo,
             description: description,
             imageUrl: imageUrl
         },
-        {
-            headers: { Authorization: `${token}` },
-         }).then((res) => {
-            console.log(res);       
-            window.location.reload()
-        })
-        
+            {
+                headers: { Authorization: `${token}` },
+            }).then((res) => {
+                console.log(res);
+                 window.location.reload()
+            })
+
     };
-    
-    
+
+
 
     return (
         <div>
@@ -71,33 +71,47 @@ function UpdateProfil() {
                 <button onClick={closeModal} className="buttonClose">Fermer</button>
                 <div className="form">Changer votre pseudo</div>
                 <form>
-                
+
                     <input id="inputPseudo" onChange={(e) => {
                         const val = e.target.value
-                        if (val === null){ 
-                        setPseudo("vide")
+
+                        if (e.target.value === "") {
+                            setPseudo()
                         }
-                        else if (val != null) {
-                            setPseudo("pas vide") }
-                            
+                        else if (val !== "") {
+                            setPseudo(e.target.value)
+                        }
+                        
                     }} />
+
                 </form>
                 <div className="form">Changer votre description</div>
                 <form>
-                    <textarea id="inputDescription"  onChange={(e) => {
-                        if ( e.target.value !== null){
-                        setDescription(e.target.value)
+                    <textarea id="inputDescription" onChange={(e) => {
+                        const val = e.target.value
+                        if (e.target.value === "") {
+                            setDescription()
                         }
+                        else if (val !== "") {
+                            setDescription(e.target.value)
+                        }
+                        console.log(val)
                     }} />
-                     <br />
+                    <br />
                     Url de l'image ici
-                            <input id="inputImage" onChange={(e) => {
-                                if(e.target.value !== null) {
-                                setImageUrl(e.target.value)
-                                }
-                            }}>
+                    <input id="inputImage" onChange={(e) => {
+                        const val = e.target.value
 
-                            </input> <br />
+                        if (e.target.value === "") {
+                            setImageUrl()
+                        }
+                        else if (val != null) {
+                            setImageUrl(e.target.value)
+                        }
+                        
+                    }}>
+
+                    </input> <br />
                 </form>
 
                 <button onClick={update}>Valider</button>

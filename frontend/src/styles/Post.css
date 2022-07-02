@@ -21,8 +21,8 @@
 }
 
 .user{
-    float:right;
     font-size: small;
+    float: right;
 }
 
 .userimg{
@@ -76,6 +76,13 @@
     }
     .inputPost{
         max-width: 300px
+    }
+    .user{
+        float: left;
+        flex-direction: row-reverse
+    }
+    .userimg{
+        float: left;
     }
 }
 

@@ -22,15 +22,16 @@ dayjs.extend(relativeTime);
 
 function Post() {
     const [posts, setPosts] = useState([])
-    const [post, setPost] = useState([])
+    const [post, setPost] = useState("")
     const [imageUrl, setImageUrl] = useState("")
-
+    
 
 
     const fetchData = async () => {
         const { data } = await Axios.get("http://localhost:4200/api/post/")
         setPosts(data)
-        console.log(data);
+        
+        console.log(data.post);
     }
     
 
@@ -67,7 +68,7 @@ function Post() {
         })
 
             .then((res) => {   
-
+                window.location.reload()
             })
     }
 
@@ -123,7 +124,7 @@ function Post() {
                                     <img className="userimg" src={post.User.imageUrl} alt="" />
                                     
                                 </div>
-                           
+                           <br/>
                             <div className="comment">
 
                                
@@ -132,7 +133,7 @@ function Post() {
                                 <Link className= "comment" to={"/comment/ofpost/" + post.id}>
                                     <Route path={"/comment/ofpost/" + post.id}>
 
-                                        <Comment data={post.User.pseudo}/>
+                                        <Comment data={post.User.pseudo} data2={post.id} />
                                     </Route>
 
                                     <FontAwesomeIcon className="iconeComment" icon={faComment} />
@@ -142,6 +143,7 @@ function Post() {
                                 
                             <button className="like"onClick={() =>Like(post.id)}>
                             <FontAwesomeIcon className="iconeLike" icon = {faThumbsUp}/>
+                            {console.log(post.likes)}
                             Like: {post.likes}</button>
 
                             

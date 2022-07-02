@@ -22,6 +22,7 @@ Modal.setAppElement("#root")
 function Login() {
     let subtitle;
     const [modalIsOpen, setIsOpen] = React.useState(false);
+    
 
     function openModal() {
         setIsOpen(true);
@@ -35,18 +36,23 @@ function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-  
+    const [error, setError] = useState(false)
     const login = () => {
         Axios.post("http://localhost:4200/api/user/login", {
             email: email,
             password: password,
         }).then((res) => {
-            console.log(res);
-            sessionStorage.setItem("token", "Bearer " + res.data.token);
+            sessionStorage.setItem("token", "Bearer " + res.data.token); 
             sessionStorage.setItem("id", res.data.userId);
             window.location.reload()
+        }).catch(err => {
+            console.log(err);
+            alert("L'email ou le mot de passe sont incorrects. \n Veuillez retentez ou alors inscrivez vous ")
             
         })
+           
+        
+        
         
     };
     

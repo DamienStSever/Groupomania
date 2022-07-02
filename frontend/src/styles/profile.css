@@ -1,11 +1,20 @@
 .pageProfile{
+    height: 900px;
+    margin: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     font-family: "Lato";
 }
 
 .profileButton{
     display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (max-width: 992px){
+    .pageProfile{
+        height: 850px;
+    }
 }

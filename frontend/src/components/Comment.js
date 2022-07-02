@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react"
 import Axios from "axios"
+import { Link } from "react-router-dom"
 import "../styles/Comment.css"
+import DeleteComment from "./DeleteComment"
+
 const dayjs = require('dayjs')
 const relativeTime = require("dayjs/plugin/relativeTime");
 dayjs.extend(relativeTime);
@@ -9,7 +12,7 @@ const token = sessionStorage.getItem("token")
 
 function Comment( props) {
     const [comments, setComments] = useState([])
-    const [comment, setComment] = useState([])
+    const [comment, setComment] = useState("")
     const [imageUrl, setImageUrl] = useState("")
 
     const fetchData = async () => {
@@ -71,9 +74,14 @@ function Comment( props) {
 
             {comments.map(comment => (
                 <div key={comment.id}>
+                <Link to={"/comment/ofpost/"+ props.data2 +"/" + comment.id }>
+                <DeleteComment />
+                {console.log}
+                </Link>
                     <div className="comment">
                         <div className="date"> {dayjs(comment.createdAt).fromNow()}</div>
-                        <div className="user">{props.data}</div>
+                        <br/>
+                        <div className="userComment">{props.data}</div>
                         
                         {comment.content}
                         <br />

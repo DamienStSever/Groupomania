@@ -22,16 +22,16 @@ function PageProfile() {
 
   return (
     <div className="pageProfile">
-    <div className="profileButton">
-     <Update/> 
-    <Delete/>
-    </div>
+      <div className="profileButton">
+        <Update />
+        <Delete />
+      </div>
       <div className="pseudo"> Pseudo :{profile.pseudo} </div>
       <div className="email"> Email : {profile.email}</div>
-      <img src={profile.imageUrl} alt= "profil"/>
+      <img src={profile.imageUrl} alt="profil" />
 
       <div className="profilDescription">Description : {profile.description} </div>
-      
+
 
     </div>
 
