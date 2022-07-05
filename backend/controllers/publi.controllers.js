@@ -1,6 +1,6 @@
 const { Post, User, Comment, Like } = require("../models/")
 
-
+const jwt = require('jsonwebtoken');
 
 // Mettre une publication
 exports.createPost = (req, res) => {
@@ -50,49 +50,58 @@ exports.getOnePost = (req, res, next) => {
 
 // Modifier son post
 exports.updatePost = (req, res, next) => {
-    const postObject = req.body; 
+    const postObject = req.body;
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+    const admin = decodedToken.admin
     Post.findOne({ where: { id: req.params.id } })
-        .then((Post) => {           
-            Post.update(postObject)
-                .then(() => res.status(200).json({ message: 'Publication modifiée !' }))
-                .catch(error => res.status(400).json({ error }));
-            // });
+        .then((post) => {
+            if (post.userId !== req.auth.userId && admin == false) {
+                res.status(401).json({
+                    error: new Error("Requête non authorisé")
+                });
+
+            } else {
+                post.update(postObject)
+                    .then(() => res.status(200).json({ message: 'Post modifié !' }))
+                    .catch(error => res.status(400).json({ error }));
+            }
         })
-        .catch(err => res.status(400).send('ID unknown :' + req.params.id))
+        .catch(error => res.status(500).json({ error }));
 }
 
 //supression d un post
 
 exports.deletePost = (req, res, next) => {
+
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+    const admin = decodedToken.admin
     Post.findOne({ where: { id: req.params.id } })
         .then((post) => {
-            if(!post){
-                res.status(404).json({
-                    error: new Error("Pas de Post")
-                });
-            }
-            if(post.userId !== req.auth.userId) {
-                res.status(400).json({
+            if (post.userId !== req.auth.userId && admin == false) {
+                res.status(401).json({
                     error: new Error("Requête non authorisé")
                 });
+
+            } else {
+                post.destroy({ where: { id: req.params.id } })
+                    .then(() => res.status(200).json({ message: 'Post supprimée !' }))
+                    .catch(error => res.status(400).json({ error }));
             }
-            post.destroy({ where: { id: req.params.id } })
-                .then(() => res.status(200).json({ message: 'Post supprimée !' }))
-                .catch(error => res.status(400).json({ error }));
-            //});
         })
         .catch(error => res.status(500).json({ error }));
 }
 
 // Possibilite de liker un post
 exports.likePost = (req, res) => {
-    Like.findOne({    
+    Like.findOne({
         where: {
             userId: req.body.userId,
             postId: req.body.postId
         }
     })
-    
+
         .then(response => {
             // Si l'utilisateur n'a jamais liké ou disliké la publication
             if (response == null) {
@@ -103,7 +112,7 @@ exports.likePost = (req, res) => {
                         postId: req.body.postId,
                         liked: req.body.likeValue
                     });
-                    
+
                     Post.increment(
                         { likes: 1 },
                         { where: { id: req.body.postId } }
@@ -112,18 +121,18 @@ exports.likePost = (req, res) => {
                 }
 
             }
-            else if(response.dataValues.liked == 1) {
+            else if (response.dataValues.liked == 1) {
                 if (req.body.likeValue == 1) {
                     Like.destroy(
-                        { where:   { postId: req.body.postId, userId: req.body.userId}   }
+                        { where: { postId: req.body.postId, userId: req.body.userId } }
                     );
                     Post.decrement(
                         { likes: 1 },
                         { where: { id: req.body.postId } }
                     );
-                    res.status(201).json({ message: "Like retiré"})
+                    res.status(201).json({ message: "Like retiré" })
                 };
-                
+
             }
         })
 }

@@ -7,15 +7,16 @@ const fs = require("fs")
 exports.signup = (req, res) => {
   const userObject = req.body
   if (req.file) {
-        userObject.imageUrl = `${req.protocol}://${req.get("host")}/images/${req.file.filename
-            }`;
-    }
+    userObject.imageUrl = `${req.protocol}://${req.get("host")}/images/${req.file.filename
+      }`;
+  }
   bcrypt.hash(req.body.password, 10)
     .then(hash => {
       const newUser = {
         pseudo: req.body.pseudo,
         email: req.body.email,
         password: hash,
+        admin: req.body.admin
       }
       User.create(newUser)
         .then(() => res.status(200).json({ message: 'Utilisateur créé' }))
@@ -38,14 +39,15 @@ exports.signin = async (req, res) => {
             return res.status(401).json({ message: "Mot de pass incorrect" })
           }
 
-           res.status(200).json({
-                        userId: user.id,
-                        token: jwt.sign(
-                            { userId: user.id },
-                            'RANDOM_TOKEN_SECRET',
-                            { expiresIn: '24h' }
-                        )
-                    });
+          res.status(200).json({
+            admin: user.admin,
+            userId: user.id,
+            token: jwt.sign(
+              { userId: user.id, admin: user.admin },
+              'RANDOM_TOKEN_SECRET',
+              { expiresIn: '24h' }
+            )
+          });
         })
         .catch(error => res.status(500).json({ error }))
     })
@@ -61,15 +63,17 @@ exports.logout = (req, res) => {
 }
 
 // Voir tout les autres profils
-exports.getAllUsers = (req, res) => {{
-  User.scope("withoutPassword").findAll()
-    .then((users) => {
-      res.status(200).json(users)
-    })
-    .catch((error) => {
-      res.status(400).json({ error: error })
-    });
-}}
+exports.getAllUsers = (req, res) => {
+  {
+    User.scope("withoutPassword").findAll()
+      .then((users) => {
+        res.status(200).json(users)
+      })
+      .catch((error) => {
+        res.status(400).json({ error: error })
+      });
+  }
+}
 
 // voir un profil
 exports.getOneUser = (req, res, next) => {
@@ -93,11 +97,11 @@ exports.updateUser = (req, res, next) => {
       User.update(userObject)
         .then(() => res.status(200).json({ message: 'Utilisateur modifiée !' }))
         .catch(err => res.status(400).send("Probleme"))
-     //  })
+      //  })
 
 
     })
-    .catch(err =>res.status(400).send('ID unknown :' + req.params.id))
+    .catch(err => res.status(400).send('ID unknown :' + req.params.id))
 }
 
 

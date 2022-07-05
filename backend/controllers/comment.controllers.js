@@ -1,5 +1,5 @@
 const { Comment, User  } = require("../models/")
-
+const jwt = require('jsonwebtoken');
 
 // Mettre un commentaire
 exports.createComment = (req, res) => {
@@ -71,15 +71,23 @@ exports.updateComment = (req, res, next) => {
 //supression d un commentaire
 
 exports.deleteComment = (req, res, next) => {
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+    const admin = decodedToken.admin
     Comment.findOne({ where: { id: req.params.id } })
-        .then(comment => {
+    .then((comment) => {;
+        if(comment.userId !== req.auth.userId && admin == false ) {
+            res.status(401).json({
+                error: new Error("Requête non authorisé")        
+            });
             
-            Comment.destroy({ where: { id: req.params.id } })
-                .then(() => res.status(200).json({ message: 'Publication supprimée !' }))
-                .catch(error => res.status(400).json({ error }));
-            //});
-        })
-        .catch(error => res.status(500).json({ error }));
+        } else{
+        comment.destroy({ where: { id: req.params.id } })
+            .then(() => res.status(200).json({ message: 'Post supprimée !' }))
+            .catch(error => res.status(400).json({ error }));
+        }
+    })
+    .catch(error => res.status(500).json({ error }));
 }
 
 
