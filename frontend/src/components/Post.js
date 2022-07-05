@@ -9,7 +9,6 @@ import UpdatePost from "./UpdatePost"
 import Comment from "./Comment"
 import { BrowserRouter as Router, Route, } from "react-router-dom"
 import DeletePost from "./DeletePost"
-//import Like from "./Like.js"
 
 
 
@@ -31,12 +30,13 @@ function Post() {
         const { data } = await Axios.get("http://localhost:4200/api/post/")
         setPosts(data)
         
-        console.log(data.post);
+       
     }
     
 
     const userId = JSON.parse(sessionStorage.getItem("id"))
-
+    const admin = JSON.parse(sessionStorage.getItem("admin"))
+    console.log(userId)
     const postPost = () => {
 
             
@@ -92,7 +92,7 @@ function Post() {
                         Url de l'image ici
                         <input id="inputImage" onChange={(e) => {
                             setImageUrl(e.target.value)
-                            console.log(imageUrl)
+                            
                         }}>
 
                         </input> <br />
@@ -105,13 +105,19 @@ function Post() {
                 {posts.map(post => (
 
                     <div key={post.id}>
-
+                    {console.log(post)}
 
                         <div className="post">
 
                             <Link to={"/post/" + post.id}>
+                               {post.userId === userId  || admin === true ?  ( 
                                 <UpdatePost />
-                                <DeletePost />
+                               ) : null }  
+                               {post.userId === userId  || admin === true ?  (
+                                <DeletePost /> 
+                               ) : null } 
+                               {console.log(userId)} 
+                                
                             </Link>
 
                             <div className="date"> {dayjs(post.createdAt).fromNow()}</div>
@@ -119,7 +125,8 @@ function Post() {
                             {post.content}
                             
                             <br />
-                            <img src={post.imageUrl} alt="" />
+                            <img className="postImage" src={post.imageUrl} alt="" />
+                            <br/>
                             <div className="user">{post.User.pseudo}
                                     <img className="userimg" src={post.User.imageUrl} alt="" />
                                     
@@ -133,7 +140,7 @@ function Post() {
                                 <Link className= "comment" to={"/comment/ofpost/" + post.id}>
                                     <Route path={"/comment/ofpost/" + post.id}>
 
-                                        <Comment data={post.User.pseudo} data2={post.id} />
+                                        <Comment data={post.User.pseudo} data2={post.id} comments= {post.Comments} />
                                     </Route>
 
                                     <FontAwesomeIcon className="iconeComment" icon={faComment} />
@@ -143,7 +150,6 @@ function Post() {
                                 
                             <button className="like"onClick={() =>Like(post.id)}>
                             <FontAwesomeIcon className="iconeLike" icon = {faThumbsUp}/>
-                            {console.log(post.likes)}
                             Like: {post.likes}</button>
 
                             

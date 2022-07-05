@@ -49,6 +49,10 @@ const UpdatePost = () => {
              }
         ).then((res) => {
             window.location.reload()
+        }).catch(err => {
+            console.log(err);
+            alert("Vous n avez pas le droit de modifiez cette publication")
+        
         })
 
     };

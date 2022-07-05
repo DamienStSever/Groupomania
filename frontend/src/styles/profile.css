@@ -13,6 +13,11 @@
     align-items: center;
 }
 
+.image{
+    width: 500px;
+    height: 500px
+}
+
 @media screen and (max-width: 992px){
     .pageProfile{
         height: 850px;

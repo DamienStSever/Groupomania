@@ -47,8 +47,13 @@ const DeleteComment = (props) => {
         
         .then((res) => {
             console.log(res);
-
+            window.location.reload()
             
+            
+        }).catch(err => {
+            console.log(err);
+            alert("Vous n avez pas le droit de supprimez ce commentaire")
+        
         })
         
     };

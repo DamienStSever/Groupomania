@@ -36,7 +36,6 @@ function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState(false)
     const login = () => {
         Axios.post("http://localhost:4200/api/user/login", {
             email: email,
@@ -44,6 +43,8 @@ function Login() {
         }).then((res) => {
             sessionStorage.setItem("token", "Bearer " + res.data.token); 
             sessionStorage.setItem("id", res.data.userId);
+            sessionStorage.setItem("admin", res.data.admin)
+            console.log(res.data.admin);
             window.location.reload()
         }).catch(err => {
             console.log(err);

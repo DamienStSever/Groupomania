@@ -29,6 +29,10 @@
     width: 50px;
     height: 40px;
 }
+.postImage{
+    max-width: 500px;
+    max-height: 500px
+}
 .comment{
     font-size: x-small;
     padding-top: 10px;
@@ -41,9 +45,7 @@
     float: left;
     padding-right: 5px;
 }
-.comment{
-    text-decoration: none;
-}
+
 
 .like{
     background-color: #fd2d01;
@@ -110,5 +112,9 @@
     .createPost{
         max-width: 150px;
         margin-left: 50px;
+    }
+    .postImage{
+        max-width: 200px;
+        max-height: 250px;
     }
 }

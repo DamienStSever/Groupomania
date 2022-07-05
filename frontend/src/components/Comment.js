@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import {  useState } from "react"
 import Axios from "axios"
 import { Link } from "react-router-dom"
 import "../styles/Comment.css"
@@ -11,20 +11,16 @@ dayjs.extend(relativeTime);
 const token = sessionStorage.getItem("token")
 
 function Comment( props) {
-    const [comments, setComments] = useState([])
+    
     const [comment, setComment] = useState("")
     const [imageUrl, setImageUrl] = useState("")
 
-    const fetchData = async () => {
-
-        const { data } = await Axios.get("http://localhost:4200/api"+window.location.pathname)
-        setComments(data)
-        
-    }
+    
 
 
     
     const userId = JSON.parse(sessionStorage.getItem("id"))
+    const admin = JSON.parse(sessionStorage.getItem("admin"))
 
 
     const postComment = () => {
@@ -44,10 +40,6 @@ function Comment( props) {
 
         })
     }
-    useEffect(() => {
-        fetchData();
-    }, [])
-
 
     return (
 
@@ -72,16 +64,18 @@ function Comment( props) {
                 </form>
             </div>
 
-            {comments.map(comment => (
+            {props.comments.map(comment => (
                 <div key={comment.id}>
                 <Link to={"/comment/ofpost/"+ props.data2 +"/" + comment.id }>
-                <DeleteComment />
-                {console.log}
+                {comment.userId === userId  || admin === true ?  (
+                                <DeleteComment /> 
+                               ) : null } 
+                {console.log(comment)}
                 </Link>
                     <div className="comment">
                         <div className="date"> {dayjs(comment.createdAt).fromNow()}</div>
                         <br/>
-                        <div className="userComment">{props.data}</div>
+                        <div className="userComment">{comment.User.pseudo}</div>
                         
                         {comment.content}
                         <br />
