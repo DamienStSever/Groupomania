@@ -5,7 +5,7 @@ import Modal from "react-modal"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
-
+// Style de la Modal
 const customStyles = {
     content: {
         top: '50%',

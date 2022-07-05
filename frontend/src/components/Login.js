@@ -4,7 +4,7 @@ import "../styles/Modal.css"
 import Modal from "react-modal"
 
 
-
+// Style de la Modal
 const customStyles = {
     content: {
         top: '50%',
@@ -36,6 +36,8 @@ function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    
     const login = () => {
         Axios.post("http://localhost:4200/api/user/login", {
             email: email,
@@ -46,6 +48,8 @@ function Login() {
             sessionStorage.setItem("admin", res.data.admin)
             console.log(res.data.admin);
             window.location.reload()
+
+        // Si le mot de passe ou l'email sont incorrect
         }).catch(err => {
             console.log(err);
             alert("L'email ou le mot de passe sont incorrects. \n Veuillez retentez ou alors inscrivez vous ")
@@ -57,25 +61,25 @@ function Login() {
         
     };
     
-    // Transforme le bouton Se connecter en Se déconnecter
+    //  Disparition du bouton si connecter à un utilisateur
     const [user, setUser] = useState(0)
     useEffect(() => {
 
-        var id = sessionStorage.getItem("id")
-        if (id == null) {
-            id = " "
+        var login = sessionStorage.getItem("id")
+        if (login == null) {
+            login = " "
 
 
         } else {
-            id = null
+            login = null
 
         }
-        sessionStorage.getItem("id", id)
-        setUser(id)
+        
+        setUser(login)
 
     }, []);
     
-    // Permet d 'envoyer l 'email et le password dnas la base de données
+    
     return (
         <div>
 

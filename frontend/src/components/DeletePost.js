@@ -5,7 +5,7 @@ import Modal from "react-modal"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
-
+// Style du Modal
 const customStyles = {
     content: {
         top: '50%',
@@ -48,6 +48,7 @@ const DeletePost = () => {
             console.log(res);
             window.location.reload()
     
+        // Si il ne s agit pas du bon utilisateur
         }).catch(err => {
             console.log(err);
             alert("Vous n avez pas le droit de supprimez cette publication")

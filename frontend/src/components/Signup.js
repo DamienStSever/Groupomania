@@ -3,6 +3,7 @@ import Axios from "axios";
 import "../styles/Modal.css"
 import Modal from "react-modal"
 
+//Style Modal
 const customStyles = {
   content: {
     top: '50%',
@@ -33,21 +34,21 @@ function Signup() {
   const [password, setPassword] = useState("");
   const [description, setDescription]= useState("")
 
-  // Transforme le bouton S incrire en bouton Profil
+  // Fait apparraitre le bouton si l utilisateur n est pas connecté
   const [user, setUser] = useState(0)
   useEffect(() => {
 
-      var id = sessionStorage.getItem("id")
-      if (id == null) {
-          id = " "
+      var signup = sessionStorage.getItem("id")
+      if (signup == null) {
+          signup = " "
 
 
       } else {
-          id = null
+          signup = null
          
       }
-      sessionStorage.getItem("id", id)
-      setUser(id)
+      
+      setUser(signup)
 
   }, []);
 

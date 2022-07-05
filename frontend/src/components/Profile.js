@@ -10,20 +10,19 @@ function Profile() {
     
     const [user, setUser] = useState(0)
 
-// Transforme le bouton Se déconnecter en Se connecter
+//  Apparition du bouton si connecter à un utilisateur
     useEffect(() => {
 
-        var id = sessionStorage.getItem("id")
-        if (id == null) {
-            id = null
+        var profile = sessionStorage.getItem("id")
+        if (profile == null) {
+            profile = null
 
 
         } else {
-            id = " "
+            profile = " "
 
         }
-        sessionStorage.getItem("id", id)
-        setUser(id)
+        setUser(profile)
 
     }, []);
 

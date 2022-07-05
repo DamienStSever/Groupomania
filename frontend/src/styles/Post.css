@@ -2,10 +2,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-   
-
+}
+.inputPost{
+    height: 50px;
+    size:25px;
+    width: 500px;   
 }
 
+.date{
+    font-size: xx-small;
+    font-style: italic;
+}
 .post{
     width: 700px;
     background:#ffd7d7;
@@ -15,9 +22,9 @@
     margin-bottom: 20px;
    font-family: "Lato";
 }
-.date{
-    font-size: xx-small;
-    font-style: italic;
+.postImage{
+    max-width: 500px;
+    max-height: 500px
 }
 
 .user{
@@ -29,10 +36,7 @@
     width: 50px;
     height: 40px;
 }
-.postImage{
-    max-width: 500px;
-    max-height: 500px
-}
+
 .comment{
     font-size: x-small;
     padding-top: 10px;
@@ -53,21 +57,17 @@
     margin-left: 15px;
 }
 
-.icon{
-    float: right;
-}
 
-.inputPost{
-    height: 50px;
-    size:25px;
-    width: 500px;
-    
-}
+
+
 
 @media screen and (max-width: 992px) {
     .Posts{
         max-width: 500px;
         margin: auto
+    }
+    .inputPost{
+        max-width: 300px
     }
     .post{
         max-width: 550px;
@@ -76,9 +76,7 @@
         flex-direction: column;
         max-width: 75px
     }
-    .inputPost{
-        max-width: 300px
-    }
+    
     .user{
         float: left;
         flex-direction: row-reverse
@@ -89,15 +87,27 @@
 }
 
 @media screen and (max-width:768px) {
-
-    .post{
-        max-width: 250px;
-        margin-left: 90px;
-    }
     .Posts{
         max-width: 200px;
         margin: auto;
     }
+    .createPost{
+        max-width: 150px;
+        margin-left: 50px;
+    }
+    .inputPost{
+        max-width: 150px;
+    }
+    
+    .post{
+        max-width: 250px;
+        margin-left: 90px;
+    }
+    .postImage{
+        max-width: 200px;
+        max-height: 250px;
+    }
+   
     .userbutton{
         max-width: 50px;
         font-size: xx-small;
@@ -106,15 +116,7 @@
         max-width: 30px;
         max-height: 30px;
     }
-    .inputPost{
-        max-width: 150px;
-    }
-    .createPost{
-        max-width: 150px;
-        margin-left: 50px;
-    }
-    .postImage{
-        max-width: 200px;
-        max-height: 250px;
-    }
+    
+    
+    
 }

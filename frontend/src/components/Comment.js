@@ -14,11 +14,6 @@ function Comment( props) {
     
     const [comment, setComment] = useState("")
     const [imageUrl, setImageUrl] = useState("")
-
-    
-
-
-    
     const userId = JSON.parse(sessionStorage.getItem("id"))
     const admin = JSON.parse(sessionStorage.getItem("admin"))
 
@@ -44,7 +39,7 @@ function Comment( props) {
     return (
 
         <div className="Comments">
-
+        
             <div className="createComment">
                 <form>Parlez ici
                     <input id="inputComment" onChange={(e) => {
@@ -66,7 +61,7 @@ function Comment( props) {
 
             {props.comments.map(comment => (
                 <div key={comment.id}>
-                <Link to={"/comment/ofpost/"+ props.data2 +"/" + comment.id }>
+                <Link to={"/comment/ofpost/"+ props.data +"/" + comment.id }>
                 {comment.userId === userId  || admin === true ?  (
                                 <DeleteComment /> 
                                ) : null } 
@@ -79,7 +74,7 @@ function Comment( props) {
                         
                         {comment.content}
                         <br />
-                        <img src={comment.imageUrl} alt="" />
+                        <img className="commentImage" src={comment.imageUrl} alt="" />
                     </div>
                 </div>
 

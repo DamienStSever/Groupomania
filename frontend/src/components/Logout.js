@@ -1,4 +1,4 @@
-import { faWindowRestore } from "@fortawesome/free-solid-svg-icons";
+
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../styles/Logout.css"
@@ -6,21 +6,20 @@ import "../styles/Logout.css"
 
 function Logout(){
 
-     // Transforme le bouton Se déconnecter en Se connecter
+    // Apparition du bouton si connecter à un utilisateur
     const [user, setUser] = useState(0)
     useEffect(() => {
 
-        var id = sessionStorage.getItem("id")
-        if (id == null) {
-            id = null
+        var logout = sessionStorage.getItem("id")
+        if (logout == null) {
+            logout = null
 
 
         } else {
-            id = " "
+            logout = " "
            
         }
-        sessionStorage.getItem("id", id)
-        setUser(id)
+        setUser(logout)
 
     }, []);
 

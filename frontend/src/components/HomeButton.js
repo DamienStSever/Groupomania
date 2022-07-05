@@ -4,21 +4,21 @@ import { Link } from "react-router-dom";
 
 function HomeButton(){
 
-     // Transforme le bouton Se déconnecter en Se connecter
+     // Apparition du bouton si connecter à un utilisateur
     const [user, setUser] = useState()
     useEffect(() => {
 
-        var id = sessionStorage.getItem("id")
-        if (id == null) {
-            id = null
+        var home = sessionStorage.getItem("id")
+        if (home == null) {
+            home = null
 
 
         } else {
-            id = " "
+            home = " "
            
         }
-        sessionStorage.getItem("id", id)
-        setUser(id)
+        
+        setUser(home)
 
     }, []);
 

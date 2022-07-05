@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
-
+//style du Modal
 const customStyles = {
     content: {
         top: '50%',
@@ -22,7 +22,7 @@ const customStyles = {
 const token = sessionStorage.getItem("token")
 
 Modal.setAppElement("#root")
-const DeleteComment = (props) => {
+const DeleteComment = () => {
     let subtitle;
     const [modalIsOpen, setIsOpen] = React.useState(false);
 
@@ -49,7 +49,7 @@ const DeleteComment = (props) => {
             console.log(res);
             window.location.reload()
             
-            
+        // Si il ne s agit pas du bon utilisateur
         }).catch(err => {
             console.log(err);
             alert("Vous n avez pas le droit de supprimez ce commentaire")
