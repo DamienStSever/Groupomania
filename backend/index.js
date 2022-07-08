@@ -1,7 +1,7 @@
 const express = require ("express")
 const app = express();
 const path = require("path")
-const Sequelize  = require('sequelize');
+
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -16,16 +16,7 @@ app.use((req, res, next) => {
   next();
 });
 
-const sequelize = new Sequelize("groupomania", "root", "Marcrobert1988", {
-  dialect: "mysql",
-  host: "localhost"
-});
-try {
-  sequelize.authenticate();
-  console.log('Connecté à la base de données MySQL!!!!');
-} catch (error) {
-  console.error('Impossible de se connecter, erreur suivante :', error);
-}
+
   
 app.use("/images", express.static(path.join(__dirname,"images")))
 app.use(express.json());
@@ -47,6 +38,4 @@ app.use(express.urlencoded({extended: true}));
     console.log("Backend running on port 4200");
   });
 
-
-
-
+module.exports = app
